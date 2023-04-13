@@ -2,13 +2,20 @@
 This repository contains the Job Definition's of [MesoSim's built in strategy library](https://portal.deltaray.io).
 
 ## Structure
- - Files in root: Ready to use options strategies 
- - Files in `mesosim-feature-examples/`: demonstration of key MesoSim features 
+ - Files in [complete-strategies](complete-strategies): Ready to use options strategies 
+ - Files in [feature-examples](feature-examples): demonstration of key MesoSim features 
 
 
 ## How to run
 
 Head to [MesoSim Portal](https://portal.deltaray.io) and paste the job definition to a new run and execute.
+
+## Analyze runs in OptionNet Explorer
+
+Once the runs are completed you can export the results from [MesoSim Portal](https://portal.deltaray.io) and import it to [OptionNet Explorer](https://www.optionnetexplorer.com/).
+Please refer to the following [documentation page](https://docs.deltaray.io/export-to-optionnetexplorer) for further details.
+For automated import to OptionNet Explorer you can leverage the [mesosim-one-import](https://github.com/deltaray-io/mesosim-one-import) application.
+
 
 ## Legal disclaimer
 The content is for informational purposes only, you should not construe any such information or other material as investment, financial, or other advice. 
