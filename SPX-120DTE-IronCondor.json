@@ -1,0 +1,143 @@
+{
+  "Name": "generate",
+  "TemplateName": "[SPX-120DTE-IronCondor]",
+  "Start": "2022-01-01T00:00:00",
+  "End": "2022-12-31T00:00:00",
+  "Cash": 10000.0000,
+  "Symbol": "SPX",
+  "Structure": {
+    "Name": "Asymmetric Iron Condor (AIC)",
+    "Expirations": [
+      {
+        "Name": "exp1",
+        "DTE": "120",
+        "Min": null,
+        "Max": null,
+        "Roots": null
+      }
+    ],
+    "Legs": [
+      {
+        "Name": "short_put",
+        "Qty": "-1",
+        "ExpirationName": "exp1",
+        "StrikeSelector": {
+          "Min": null,
+          "Max": null,
+          "BidPrice": null,
+          "AskPrice": null,
+          "MidPrice": null,
+          "Delta": "15",
+          "Gamma": null,
+          "Theta": null,
+          "Vega": null,
+          "WVega": null,
+          "Rho": null,
+          "IV": null,
+          "Statement": null
+        },
+        "OptionType": "Put"
+      },
+      {
+        "Name": "long_put",
+        "Qty": "1",
+        "ExpirationName": "exp1",
+        "StrikeSelector": {
+          "Min": null,
+          "Max": null,
+          "BidPrice": null,
+          "AskPrice": null,
+          "MidPrice": null,
+          "Delta": "7",
+          "Gamma": null,
+          "Theta": null,
+          "Vega": null,
+          "WVega": null,
+          "Rho": null,
+          "IV": null,
+          "Statement": null
+        },
+        "OptionType": "Put"
+      },
+      {
+        "Name": "short_call",
+        "Qty": "-1",
+        "ExpirationName": "exp1",
+        "StrikeSelector": {
+          "Min": null,
+          "Max": null,
+          "BidPrice": null,
+          "AskPrice": null,
+          "MidPrice": null,
+          "Delta": "15",
+          "Gamma": null,
+          "Theta": null,
+          "Vega": null,
+          "WVega": null,
+          "Rho": null,
+          "IV": null,
+          "Statement": null
+        },
+        "OptionType": "Call"
+      },
+      {
+        "Name": "long_call",
+        "Qty": "1",
+        "ExpirationName": "exp1",
+        "StrikeSelector": {
+          "Min": null,
+          "Max": null,
+          "BidPrice": null,
+          "AskPrice": null,
+          "MidPrice": null,
+          "Delta": "7",
+          "Gamma": null,
+          "Theta": null,
+          "Vega": null,
+          "WVega": null,
+          "Rho": null,
+          "IV": null,
+          "Statement": null
+        },
+        "OptionType": "Call"
+      }
+    ]
+  },
+  "Entry": {
+    "Schedule": {
+      "AfterMarketOpenMinutes": 30,
+      "BeforeMarketCloseMinutes": null,
+      "Every": "mon"
+    },
+    "Conditions": [],
+    "VarDefines": null,
+    "AbortConditions": [],
+    "ReentryDays": 1,
+    "Concurrency": null
+  },
+  "Adjustment": null,
+  "Exit": {
+    "Schedule": {
+      "AfterMarketOpenMinutes": 30,
+      "BeforeMarketCloseMinutes": null,
+      "Every": "day"
+    },
+    "MaxDaysInTrade": null,
+    "ProfitTarget": null,
+    "StopLoss": "leg_short_put_price * 100 * 3",
+    "Conditions": []
+  },
+  "Indicators": null,
+  "ExternalData": null,
+  "SimSettings": {
+    "FillModel": "AtMidPrice",
+    "SlippageAmt": 0,
+    "Commission": {
+      "CommissionModel": "FixedFee",
+      "OptionFee": 1.5,
+      "DeribitCommissionSettings": null
+    },
+    "LegSelectionConstraint": "FullyUnique"
+  },
+  "MesoSimVersion": "2.6.10-0-gfaeb9d3"
+}

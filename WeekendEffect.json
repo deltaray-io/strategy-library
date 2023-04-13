@@ -1,0 +1,80 @@
+{
+  "Name": "generate",
+  "TemplateName": "[WeekendEffect]",
+  "Start": "2022-01-01T00:00:00",
+  "End": "2022-12-31T00:00:00",
+  "Cash": 10000.0000,
+  "Symbol": "SPX",
+  "Structure": {
+    "Name": "Short Put",
+    "Expirations": [
+      {
+        "Name": "exp",
+        "DTE": "3",
+        "Min": 3,
+        "Max": 3,
+        "Roots": null
+      }
+    ],
+    "Legs": [
+      {
+        "Name": "short_put",
+        "Qty": "-1",
+        "ExpirationName": "exp",
+        "StrikeSelector": {
+          "Min": 5,
+          "Max": 15,
+          "BidPrice": null,
+          "AskPrice": null,
+          "MidPrice": null,
+          "Delta": "10",
+          "Gamma": null,
+          "Theta": null,
+          "Vega": null,
+          "WVega": null,
+          "Rho": null,
+          "IV": null,
+          "Statement": null
+        },
+        "OptionType": "Put"
+      }
+    ]
+  },
+  "Entry": {
+    "Schedule": {
+      "AfterMarketOpenMinutes": null,
+      "BeforeMarketCloseMinutes": 15,
+      "Every": "fri"
+    },
+    "Conditions": [],
+    "VarDefines": null,
+    "AbortConditions": [],
+    "ReentryDays": 1,
+    "Concurrency": null
+  },
+  "Adjustment": null,
+  "Exit": {
+    "Schedule": {
+      "AfterMarketOpenMinutes": 15,
+      "BeforeMarketCloseMinutes": null,
+      "Every": "mon"
+    },
+    "MaxDaysInTrade": 1,
+    "ProfitTarget": null,
+    "StopLoss": null,
+    "Conditions": []
+  },
+  "Indicators": null,
+  "ExternalData": null,
+  "SimSettings": {
+    "FillModel": "AtMidPrice",
+    "SlippageAmt": 0,
+    "Commission": {
+      "CommissionModel": "FixedFee",
+      "OptionFee": 1.5,
+      "DeribitCommissionSettings": null
+    },
+    "LegSelectionConstraint": "FullyUnique"
+  },
+  "MesoSimVersion": "2.6.10-0-gfaeb9d3"
+}

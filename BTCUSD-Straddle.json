@@ -1,0 +1,108 @@
+{
+  "Name": "generate",
+  "TemplateName": "[BTCUSD-Straddle]",
+  "Start": "2022-01-01T00:00:00",
+  "End": "2022-12-31T00:00:00",
+  "Cash": 1.0000,
+  "Symbol": "BTCUSD",
+  "Structure": {
+    "Name": "Short Straddle",
+    "Expirations": [
+      {
+        "Name": "exp1",
+        "DTE": "7",
+        "Min": 7,
+        "Max": 7,
+        "Roots": null
+      }
+    ],
+    "Legs": [
+      {
+        "Name": "short_call",
+        "Qty": "-0.9",
+        "ExpirationName": "exp1",
+        "StrikeSelector": {
+          "Min": null,
+          "Max": null,
+          "BidPrice": null,
+          "AskPrice": null,
+          "MidPrice": null,
+          "Delta": "50",
+          "Gamma": null,
+          "Theta": null,
+          "Vega": null,
+          "WVega": null,
+          "Rho": null,
+          "IV": null,
+          "Statement": null
+        },
+        "OptionType": "Call"
+      },
+      {
+        "Name": "short_put",
+        "Qty": "-0.9",
+        "ExpirationName": "exp1",
+        "StrikeSelector": {
+          "Min": null,
+          "Max": null,
+          "BidPrice": null,
+          "AskPrice": null,
+          "MidPrice": null,
+          "Delta": "50",
+          "Gamma": null,
+          "Theta": null,
+          "Vega": null,
+          "WVega": null,
+          "Rho": null,
+          "IV": null,
+          "Statement": null
+        },
+        "OptionType": "Put"
+      }
+    ]
+  },
+  "Entry": {
+    "Schedule": {
+      "AfterMarketOpenMinutes": null,
+      "BeforeMarketCloseMinutes": 30,
+      "Every": "day"
+    },
+    "Conditions": [],
+    "VarDefines": {},
+    "AbortConditions": [],
+    "ReentryDays": 1,
+    "Concurrency": null
+  },
+  "Adjustment": null,
+  "Exit": {
+    "Schedule": {
+      "AfterMarketOpenMinutes": null,
+      "BeforeMarketCloseMinutes": 30,
+      "Every": "day"
+    },
+    "MaxDaysInTrade": 7,
+    "ProfitTarget": null,
+    "StopLoss": null,
+    "Conditions": []
+  },
+  "Indicators": null,
+  "ExternalData": null,
+  "SimSettings": {
+    "FillModel": "AtMidPrice",
+    "SlippageAmt": 0,
+    "Commission": {
+      "CommissionModel": "Deribit",
+      "OptionFee": null,
+      "DeribitCommissionSettings": {
+        "MakerFeePctPerContract": 0.03,
+        "TakerFeePctPerContract": 0.03,
+        "MaxFeePctPerContract": 12.5,
+        "DeliveryFeePctPerContract": 0.015,
+        "WaiveBuySellComboOneSide": true,
+        "WaiveDailyOptionsDeliveryFees": true
+      }
+    },
+    "LegSelectionConstraint": "FullyUnique"
+  },
+  "MesoSimVersion": "2.6.10-0-gfaeb9d3"
+}

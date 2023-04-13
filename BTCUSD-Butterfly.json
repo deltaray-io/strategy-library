@@ -1,0 +1,131 @@
+{
+  "Name": "generate",
+  "TemplateName": "[BTCUSD-Butterfly]",
+  "Start": "2022-01-01T00:00:00",
+  "End": "2022-12-31T00:00:00",
+  "Cash": 1.0000,
+  "Symbol": "BTCUSD",
+  "Structure": {
+    "Name": "Broken Wing Butterfly (BWB)",
+    "Expirations": [
+      {
+        "Name": "exp1",
+        "DTE": "14",
+        "Min": null,
+        "Max": null,
+        "Roots": null
+      }
+    ],
+    "Legs": [
+      {
+        "Name": "shorts",
+        "Qty": "-1.8",
+        "ExpirationName": "exp1",
+        "StrikeSelector": {
+          "Min": null,
+          "Max": null,
+          "BidPrice": null,
+          "AskPrice": null,
+          "MidPrice": null,
+          "Delta": "17",
+          "Gamma": null,
+          "Theta": null,
+          "Vega": null,
+          "WVega": null,
+          "Rho": null,
+          "IV": null,
+          "Statement": null
+        },
+        "OptionType": "Put"
+      },
+      {
+        "Name": "lower_long",
+        "Qty": "0.9",
+        "ExpirationName": "exp1",
+        "StrikeSelector": {
+          "Min": null,
+          "Max": null,
+          "BidPrice": null,
+          "AskPrice": null,
+          "MidPrice": null,
+          "Delta": "7",
+          "Gamma": null,
+          "Theta": null,
+          "Vega": null,
+          "WVega": null,
+          "Rho": null,
+          "IV": null,
+          "Statement": null
+        },
+        "OptionType": "Put"
+      },
+      {
+        "Name": "upper_long",
+        "Qty": "0.9",
+        "ExpirationName": "exp1",
+        "StrikeSelector": {
+          "Min": null,
+          "Max": null,
+          "BidPrice": null,
+          "AskPrice": null,
+          "MidPrice": null,
+          "Delta": "pos_delta",
+          "Gamma": null,
+          "Theta": null,
+          "Vega": null,
+          "WVega": null,
+          "Rho": null,
+          "IV": null,
+          "Statement": null
+        },
+        "OptionType": "Put"
+      }
+    ]
+  },
+  "Entry": {
+    "Schedule": {
+      "AfterMarketOpenMinutes": null,
+      "BeforeMarketCloseMinutes": 60,
+      "Every": "day"
+    },
+    "Conditions": [],
+    "VarDefines": {},
+    "AbortConditions": [],
+    "ReentryDays": 1,
+    "Concurrency": null
+  },
+  "Adjustment": null,
+  "Exit": {
+    "Schedule": {
+      "AfterMarketOpenMinutes": null,
+      "BeforeMarketCloseMinutes": 60,
+      "Every": "day"
+    },
+    "MaxDaysInTrade": 14,
+    "ProfitTarget": "leg_shorts_price * abs(leg_shorts_qty) * 0.8",
+    "StopLoss": null,
+    "Conditions": [
+      "abs(pos_delta) > 10"
+    ]
+  },
+  "Indicators": null,
+  "ExternalData": null,
+  "SimSettings": {
+    "FillModel": "AtMidPrice",
+    "SlippageAmt": 0,
+    "Commission": {
+      "CommissionModel": "Deribit",
+      "OptionFee": null,
+      "DeribitCommissionSettings": {
+        "MakerFeePctPerContract": 0.03,
+        "TakerFeePctPerContract": 0.03,
+        "MaxFeePctPerContract": 12.5,
+        "DeliveryFeePctPerContract": 0.015,
+        "WaiveBuySellComboOneSide": true,
+        "WaiveDailyOptionsDeliveryFees": true
+      }
+    },
+    "LegSelectionConstraint": "FullyUnique"
+  },
+  "MesoSimVersion": "2.6.10-0-gfaeb9d3"
+}

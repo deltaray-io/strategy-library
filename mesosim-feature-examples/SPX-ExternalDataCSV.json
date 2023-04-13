@@ -1,0 +1,86 @@
+{
+  "Name": "generate",
+  "TemplateName": "[SPX-ExternalData-Csv]",
+  "Start": "2022-01-03T00:00:00",
+  "End": "2022-01-12T00:00:00",
+  "Cash": 10000.0000,
+  "Symbol": "SPX",
+  "Structure": {
+    "Name": "ShortPut",
+    "Expirations": [
+      {
+        "Name": "exp1",
+        "DTE": "45",
+        "Min": 35,
+        "Max": 55,
+        "Roots": null
+      }
+    ],
+    "Legs": [
+      {
+        "Name": "short_put",
+        "Qty": "-1",
+        "ExpirationName": "exp1",
+        "StrikeSelector": {
+          "Min": 3,
+          "Max": 6,
+          "BidPrice": null,
+          "AskPrice": null,
+          "MidPrice": null,
+          "Delta": "5",
+          "Gamma": null,
+          "Theta": null,
+          "Vega": null,
+          "WVega": null,
+          "Rho": null,
+          "IV": null,
+          "Statement": null
+        },
+        "OptionType": "Put"
+      }
+    ]
+  },
+  "Entry": {
+    "Schedule": {
+      "AfterMarketOpenMinutes": null,
+      "BeforeMarketCloseMinutes": 30,
+      "Every": "day"
+    },
+    "Conditions": [
+      "my_entry_signal == 1 -- Variable from the ExternalData CSV"
+    ],
+    "VarDefines": {},
+    "AbortConditions": [],
+    "ReentryDays": 1,
+    "Concurrency": null
+  },
+  "Adjustment": null,
+  "Exit": {
+    "Schedule": {
+      "AfterMarketOpenMinutes": null,
+      "BeforeMarketCloseMinutes": 30,
+      "Every": "day"
+    },
+    "MaxDaysInTrade": 30,
+    "ProfitTarget": null,
+    "StopLoss": null,
+    "Conditions": [
+      "my_asset_price > 14 -- Variable from the ExternalData CSV"
+    ]
+  },
+  "Indicators": null,
+  "ExternalData": {
+    "CsvUrl": "https://gist.githubusercontent.com/tibkiss/54f9c01c6d569d6e78a1a9b23e59de68/raw/fcda115c21c9d0abaf9aea9c8513cb0bb307a2a5/mesosim-SPX-ExternalData-Template.csv"
+  },
+  "SimSettings": {
+    "FillModel": "AtMidPrice",
+    "SlippageAmt": 0,
+    "Commission": {
+      "CommissionModel": "FixedFee",
+      "OptionFee": 1.5,
+      "DeribitCommissionSettings": null
+    },
+    "LegSelectionConstraint": "FullyUnique"
+  },
+  "MesoSimVersion": "2.6.10-0-gfaeb9d3"
+}

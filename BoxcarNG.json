@@ -1,0 +1,147 @@
+{
+  "Name": "generate",
+  "TemplateName": "[Boxcar-NG]",
+  "Start": "2022-01-01T00:00:00",
+  "End": "2022-12-31T00:00:00",
+  "Cash": 10000.0000,
+  "Symbol": "SPX",
+  "Structure": {
+    "Name": "Boxcar-NG",
+    "Expirations": [
+      {
+        "Name": "exp1",
+        "DTE": "8",
+        "Min": null,
+        "Max": null,
+        "Roots": null
+      }
+    ],
+    "Legs": [
+      {
+        "Name": "pcs_short",
+        "Qty": "-10",
+        "ExpirationName": "exp1",
+        "StrikeSelector": {
+          "Min": null,
+          "Max": null,
+          "BidPrice": null,
+          "AskPrice": null,
+          "MidPrice": null,
+          "Delta": "10",
+          "Gamma": null,
+          "Theta": null,
+          "Vega": null,
+          "WVega": null,
+          "Rho": null,
+          "IV": null,
+          "Statement": null
+        },
+        "OptionType": "Put"
+      },
+      {
+        "Name": "pcs_long",
+        "Qty": "10",
+        "ExpirationName": "exp1",
+        "StrikeSelector": {
+          "Min": null,
+          "Max": null,
+          "BidPrice": null,
+          "AskPrice": null,
+          "MidPrice": null,
+          "Delta": null,
+          "Gamma": null,
+          "Theta": null,
+          "Vega": null,
+          "WVega": null,
+          "Rho": null,
+          "IV": null,
+          "Statement": "leg_pcs_short_strike - 25"
+        },
+        "OptionType": "Put"
+      },
+      {
+        "Name": "pds_long",
+        "Qty": "1",
+        "ExpirationName": "exp1",
+        "StrikeSelector": {
+          "Min": null,
+          "Max": null,
+          "BidPrice": null,
+          "AskPrice": null,
+          "MidPrice": null,
+          "Delta": null,
+          "Gamma": null,
+          "Theta": null,
+          "Vega": null,
+          "WVega": null,
+          "Rho": null,
+          "IV": null,
+          "Statement": "floor(underlying_price/5)*5 - 1 * 5"
+        },
+        "OptionType": "Put"
+      },
+      {
+        "Name": "pds_short",
+        "Qty": "-1",
+        "ExpirationName": "exp1",
+        "StrikeSelector": {
+          "Min": null,
+          "Max": null,
+          "BidPrice": null,
+          "AskPrice": null,
+          "MidPrice": null,
+          "Delta": "-1 * pos_delta",
+          "Gamma": null,
+          "Theta": null,
+          "Vega": null,
+          "WVega": null,
+          "Rho": null,
+          "IV": null,
+          "Statement": null
+        },
+        "OptionType": "Put"
+      }
+    ]
+  },
+  "Entry": {
+    "Schedule": {
+      "AfterMarketOpenMinutes": null,
+      "BeforeMarketCloseMinutes": 180,
+      "Every": "thu,fri"
+    },
+    "Conditions": [
+      "underlying_iv_rank <= 60"
+    ],
+    "VarDefines": {},
+    "AbortConditions": [],
+    "ReentryDays": 0,
+    "Concurrency": null
+  },
+  "Adjustment": null,
+  "Exit": {
+    "Schedule": {
+      "AfterMarketOpenMinutes": null,
+      "BeforeMarketCloseMinutes": 180,
+      "Every": "day"
+    },
+    "MaxDaysInTrade": 7,
+    "ProfitTarget": null,
+    "StopLoss": "underlying_price * 0.7",
+    "Conditions": [
+      "underlying_iv_rank > 60"
+    ]
+  },
+  "Indicators": null,
+  "ExternalData": null,
+  "SimSettings": {
+    "FillModel": "AtMidPrice",
+    "SlippageAmt": 0,
+    "Commission": {
+      "CommissionModel": "FixedFee",
+      "OptionFee": 1.5,
+      "DeribitCommissionSettings": null
+    },
+    "LegSelectionConstraint": "FullyUnique"
+  },
+  "MesoSimVersion": "2.6.10-0-gfaeb9d3"
+}
