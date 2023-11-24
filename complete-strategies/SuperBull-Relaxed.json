@@ -1,0 +1,126 @@
+{
+  "Name": "generate",
+  "TemplateName": "[SuperBull-Relaxed]",
+  "Description": "",
+  "Start": "2022-01-01T00:00:00",
+  "End": "2022-12-31T00:00:00",
+  "Cash": "10000.0000",
+  "Symbol": "SPX",
+  "Structure": {
+    "Name": "Bull Call Spread",
+    "Expirations": [
+      {
+        "Name": "exp1",
+        "DTE": "65",
+        "Min": "60",
+        "Max": "75",
+        "Roots": {
+          "Include": [
+            "SPX"
+          ],
+          "Exclude": []
+        }
+      }
+    ],
+    "Legs": [
+      {
+        "Name": "long",
+        "Qty": "2",
+        "ExpirationName": "exp1",
+        "StrikeSelector": {
+          "Min": "48",
+          "Max": "50",
+          "BidPrice": null,
+          "AskPrice": null,
+          "MidPrice": null,
+          "Delta": "48",
+          "Gamma": null,
+          "Theta": null,
+          "Vega": null,
+          "WVega": null,
+          "Rho": null,
+          "IV": null,
+          "Statement": null,
+          "Complex": null
+        },
+        "OptionType": "Call"
+      },
+      {
+        "Name": "short",
+        "Qty": "-2",
+        "ExpirationName": "exp1",
+        "StrikeSelector": {
+          "Min": null,
+          "Max": null,
+          "BidPrice": null,
+          "AskPrice": null,
+          "MidPrice": "leg_long_price - 5",
+          "Delta": null,
+          "Gamma": null,
+          "Theta": null,
+          "Vega": null,
+          "WVega": null,
+          "Rho": null,
+          "IV": null,
+          "Statement": null,
+          "Complex": null
+        },
+        "OptionType": "Call"
+      }
+    ]
+  },
+  "Entry": {
+    "Schedule": {
+      "AfterMarketOpenMinutes": null,
+      "BeforeMarketCloseMinutes": "30",
+      "Every": "day"
+    },
+    "Conditions": [],
+    "VarDefines": {
+      "entry_debit": "(leg_long_price * leg_long_qty + leg_short_price * leg_short_qty) * 100",
+      "max_profit": "((leg_short_strike - leg_long_strike) * leg_long_qty - (leg_long_price * leg_long_qty + leg_short_price * leg_short_qty)) * 100",
+      "reward_risk": "(((leg_short_strike - leg_long_strike) * 100 * leg_long_qty) - (((leg_long_price * leg_long_qty) + (leg_short_price * leg_short_qty)) * 100)) / (((leg_long_price * leg_long_qty) + (leg_short_price * leg_short_qty)) * 100)"
+    },
+    "AbortConditions": [
+      "leg_short_strike == leg_long_strike",
+      "(((leg_short_strike - leg_long_strike) * 100 * leg_long_qty ) - (((leg_long_price * leg_long_qty) + (leg_short_price * leg_short_qty)) * 100)) / (((leg_long_price * leg_long_qty) + (leg_short_price * leg_short_qty)) * 100) < 0.7"
+    ],
+    "ReentryDays": "0",
+    "Concurrency": {
+      "MaxPositionsInFlight": "10",
+      "EntryShiftDays": "7"
+    },
+    "QtyMultiplier": null
+  },
+  "Adjustment": null,
+  "Exit": {
+    "Schedule": {
+      "AfterMarketOpenMinutes": null,
+      "BeforeMarketCloseMinutes": "30",
+      "Every": "day"
+    },
+    "MaxDaysInTrade": "60",
+    "ProfitTarget": "max_profit * 0.5",
+    "StopLoss": "max_profit * 2",
+    "Conditions": [],
+    "VarDefines": null
+  },
+  "Indicators": null,
+  "ExternalData": null,
+  "SimSettings": {
+    "FillModel": "AtMidPrice",
+    "SlippageAmt": "0",
+    "Commission": {
+      "CommissionModel": "FixedFee",
+      "OptionFee": "1.5",
+      "DeribitCommissionSettings": null
+    },
+    "LegSelectionConstraint": "None",
+    "Margin": {
+      "Model": "None",
+      "HouseMultiplier": null,
+      "RegTMode": "CBOEPermissive"
+    }
+  },
+  "MesoSimVersion": null
+}
