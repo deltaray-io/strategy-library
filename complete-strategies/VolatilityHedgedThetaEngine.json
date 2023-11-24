@@ -1,0 +1,135 @@
+{
+  "Name": "generate",
+  "TemplateName": "[ThetaEngine-VolatilityHedged]",
+  "Description": "",
+  "Start": "2022-01-01T00:00:00",
+  "End": "2022-12-31T00:00:00",
+  "Cash": "10000.0000",
+  "Symbol": "SPX",
+  "Structure": {
+    "Name": "ThetaEngine",
+    "Expirations": [
+      {
+        "Name": "90dte",
+        "DTE": "90",
+        "Min": "70",
+        "Max": "110",
+        "Roots": null
+      }
+    ],
+    "Legs": [
+      {
+        "Name": "short_put",
+        "Qty": "-1 * max(1, floor(((0.13 / 0.27 / 252) * nav) / (leg_short_put_price * 100)))",
+        "ExpirationName": "90dte",
+        "StrikeSelector": {
+          "Min": "10",
+          "Max": "20",
+          "BidPrice": null,
+          "AskPrice": null,
+          "MidPrice": null,
+          "Delta": "15",
+          "Gamma": null,
+          "Theta": null,
+          "Vega": null,
+          "WVega": null,
+          "Rho": null,
+          "IV": null,
+          "Statement": null,
+          "Complex": null
+        },
+        "OptionType": "Put"
+      }
+    ]
+  },
+  "Entry": {
+    "Schedule": {
+      "AfterMarketOpenMinutes": "5",
+      "BeforeMarketCloseMinutes": null,
+      "Every": "day"
+    },
+    "Conditions": [],
+    "VarDefines": {},
+    "AbortConditions": [],
+    "ReentryDays": "1",
+    "Concurrency": {
+      "MaxPositionsInFlight": "4",
+      "EntryShiftDays": "5"
+    },
+    "QtyMultiplier": null
+  },
+  "Adjustment": {
+    "Schedule": {
+      "AfterMarketOpenMinutes": null,
+      "BeforeMarketCloseMinutes": "30",
+      "Every": "day"
+    },
+    "ConditionalAdjustments": {
+      "open_trades_cnt == 1 and underlying_iv_rank > 50": {
+        "MoveLegAdjustment": null,
+        "RemoveLegsAdjustment": null,
+        "AddLegsAdjustment": {
+          "Legs": [
+            {
+              "Name": "long_put",
+              "Qty": "3 * abs(leg_short_put_qty)",
+              "ExpirationName": "90dte",
+              "StrikeSelector": {
+                "Min": null,
+                "Max": null,
+                "BidPrice": null,
+                "AskPrice": null,
+                "MidPrice": null,
+                "Delta": "4",
+                "Gamma": null,
+                "Theta": null,
+                "Vega": null,
+                "WVega": null,
+                "Rho": null,
+                "IV": null,
+                "Statement": null,
+                "Complex": null
+              },
+              "OptionType": "Put"
+            }
+          ],
+          "Expirations": null,
+          "AbortConditions": [],
+          "VarDefines": null
+        },
+        "UpdateVarsAdjustment": null
+      }
+    },
+    "MaxAdjustmentCount": null
+  },
+  "Exit": {
+    "Schedule": {
+      "AfterMarketOpenMinutes": "5",
+      "BeforeMarketCloseMinutes": null,
+      "Every": "day"
+    },
+    "MaxDaysInTrade": "90",
+    "ProfitTarget": "leg_short_put_price * 0.6 * abs(leg_short_put_qty) * 100",
+    "StopLoss": "leg_short_put_price * 3 * abs(leg_short_put_qty) * 100",
+    "Conditions": [],
+    "VarDefines": null
+  },
+  "Indicators": null,
+  "ExternalData": null,
+  "SimSettings": {
+    "FillModel": "AtMidPrice",
+    "SlippageAmt": "0",
+    "Commission": {
+      "CommissionModel": "FixedFee",
+      "OptionFee": "1.5",
+      "DeribitCommissionSettings": null
+    },
+    "LegSelectionConstraint": "None",
+    "Margin": {
+      "Model": "None",
+      "HouseMultiplier": null,
+      "RegTMode": "CBOEPermissive"
+    }
+  },
+  "MesoSimVersion": null
+}
