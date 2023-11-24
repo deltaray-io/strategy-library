@@ -1,9 +1,10 @@
 {
   "Name": "generate",
   "TemplateName": "[SPX-Entry-RootSelector]",
+  "Description": "",
   "Start": "2022-01-01T00:00:00",
   "End": "2022-12-31T00:00:00",
-  "Cash": 10000.0000,
+  "Cash": "10000.0000",
   "Symbol": "SPX",
   "Structure": {
     "Name": "ShortPut",
@@ -11,8 +12,8 @@
       {
         "Name": "exp1",
         "DTE": "45",
-        "Min": 35,
-        "Max": 55,
+        "Min": "35",
+        "Max": "55",
         "Roots": {
           "Include": [
             "SPXW"
@@ -27,8 +28,8 @@
         "Qty": "-1",
         "ExpirationName": "exp1",
         "StrikeSelector": {
-          "Min": 3,
-          "Max": 6,
+          "Min": "3",
+          "Max": "6",
           "BidPrice": null,
           "AskPrice": null,
           "MidPrice": null,
@@ -39,7 +40,8 @@
           "WVega": null,
           "Rho": null,
           "IV": null,
-          "Statement": null
+          "Statement": null,
+          "Complex": null
         },
         "OptionType": "Put"
       }
@@ -48,38 +50,45 @@
   "Entry": {
     "Schedule": {
       "AfterMarketOpenMinutes": null,
-      "BeforeMarketCloseMinutes": 30,
+      "BeforeMarketCloseMinutes": "30",
       "Every": "day"
     },
     "Conditions": [],
     "VarDefines": {},
     "AbortConditions": [],
-    "ReentryDays": 1,
-    "Concurrency": null
+    "ReentryDays": "1",
+    "Concurrency": null,
+    "QtyMultiplier": null
   },
   "Adjustment": null,
   "Exit": {
     "Schedule": {
       "AfterMarketOpenMinutes": null,
-      "BeforeMarketCloseMinutes": 30,
+      "BeforeMarketCloseMinutes": "30",
       "Every": "day"
     },
-    "MaxDaysInTrade": 30,
+    "MaxDaysInTrade": "30",
     "ProfitTarget": null,
     "StopLoss": null,
-    "Conditions": []
+    "Conditions": [],
+    "VarDefines": null
   },
   "Indicators": null,
   "ExternalData": null,
   "SimSettings": {
     "FillModel": "AtMidPrice",
-    "SlippageAmt": 0,
+    "SlippageAmt": "0",
     "Commission": {
       "CommissionModel": "FixedFee",
-      "OptionFee": 1.5,
+      "OptionFee": "1.5",
       "DeribitCommissionSettings": null
     },
-    "LegSelectionConstraint": "FullyUnique"
+    "LegSelectionConstraint": "None",
+    "Margin": {
+      "Model": "None",
+      "HouseMultiplier": null,
+      "RegTMode": "CBOEPermissive"
+    }
   },
-  "MesoSimVersion": "2.6.10-0-gfaeb9d3"
+  "MesoSimVersion": null
 }
