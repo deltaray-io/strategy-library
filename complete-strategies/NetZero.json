@@ -2,8 +2,8 @@
   "Name": "generate",
   "TemplateName": "[NetZero]",
   "Description": "",
-  "Start": "2022-01-01T00:00:00",
-  "End": "2022-12-31T00:00:00",
+  "Start": "2023-01-01T00:00:00",
+  "End": "2023-12-31T00:00:00",
   "Cash": "10000.0000",
   "Symbol": "SPX",
   "Structure": {
@@ -21,6 +21,7 @@
       {
         "Name": "upper_long",
         "Qty": "1",
+        "OptionType": "Put",
         "ExpirationName": "exp1",
         "StrikeSelector": {
           "Min": null,
@@ -37,12 +38,12 @@
           "IV": null,
           "Statement": null,
           "Complex": null
-        },
-        "OptionType": "Put"
+        }
       },
       {
         "Name": "shorts",
         "Qty": "-2",
+        "OptionType": "Put",
         "ExpirationName": "exp1",
         "StrikeSelector": {
           "Min": null,
@@ -59,12 +60,12 @@
           "IV": null,
           "Statement": null,
           "Complex": null
-        },
-        "OptionType": "Put"
+        }
       },
       {
         "Name": "lower_long",
         "Qty": "1",
+        "OptionType": "Put",
         "ExpirationName": "exp1",
         "StrikeSelector": {
           "Min": null,
@@ -81,8 +82,7 @@
           "IV": null,
           "Statement": null,
           "Complex": null
-        },
-        "OptionType": "Put"
+        }
       }
     ]
   },
@@ -135,11 +135,15 @@
       "OptionFee": "1.5",
       "DeribitCommissionSettings": null
     },
-    "LegSelectionConstraint": "None",
+    "LegSelectionConstraint": "FullyUnique",
     "Margin": {
       "Model": "None",
       "HouseMultiplier": null,
-      "RegTMode": "CBOEPermissive"
+      "RegTMode": null,
+      "PMConfig": null
+    },
+    "PositionMonitor": {
+      "TraceCollectionInterval": "Hourly"
     }
   },
   "MesoSimVersion": null

@@ -2,8 +2,8 @@
   "Name": "generate",
   "TemplateName": "[SPX-Calendar]",
   "Description": "",
-  "Start": "2022-01-01T00:00:00",
-  "End": "2022-12-31T00:00:00",
+  "Start": "2023-01-01T00:00:00",
+  "End": "2023-12-31T00:00:00",
   "Cash": "10000.0000",
   "Symbol": "SPX",
   "Structure": {
@@ -28,6 +28,7 @@
       {
         "Name": "short_call",
         "Qty": "-1",
+        "OptionType": "Call",
         "ExpirationName": "front",
         "StrikeSelector": {
           "Min": "25",
@@ -44,12 +45,12 @@
           "IV": null,
           "Statement": null,
           "Complex": null
-        },
-        "OptionType": "Call"
+        }
       },
       {
         "Name": "long_call",
         "Qty": "1",
+        "OptionType": "Call",
         "ExpirationName": "back",
         "StrikeSelector": {
           "Min": null,
@@ -66,8 +67,7 @@
           "IV": null,
           "Statement": null,
           "Complex": null
-        },
-        "OptionType": "Call"
+        }
       }
     ]
   },
@@ -115,7 +115,11 @@
     "Margin": {
       "Model": "None",
       "HouseMultiplier": null,
-      "RegTMode": "CBOEPermissive"
+      "RegTMode": null,
+      "PMConfig": null
+    },
+    "PositionMonitor": {
+      "TraceCollectionInterval": "Hourly"
     }
   },
   "MesoSimVersion": null

@@ -2,8 +2,8 @@
   "Name": "generate",
   "TemplateName": "[SPX-Entry-DownDay]",
   "Description": "",
-  "Start": "2022-01-01T00:00:00",
-  "End": "2022-12-31T00:00:00",
+  "Start": "2023-01-01T00:00:00",
+  "End": "2023-12-31T00:00:00",
   "Cash": "10000.0000",
   "Symbol": "SPX",
   "Structure": {
@@ -21,6 +21,7 @@
       {
         "Name": "short_call",
         "Qty": "-1",
+        "OptionType": "Call",
         "ExpirationName": "exp1",
         "StrikeSelector": {
           "Min": "5",
@@ -37,12 +38,12 @@
           "IV": null,
           "Statement": null,
           "Complex": null
-        },
-        "OptionType": "Call"
+        }
       },
       {
         "Name": "short_put",
         "Qty": "-1",
+        "OptionType": "Put",
         "ExpirationName": "exp1",
         "StrikeSelector": {
           "Min": "5",
@@ -59,8 +60,7 @@
           "IV": null,
           "Statement": null,
           "Complex": null
-        },
-        "OptionType": "Put"
+        }
       }
     ]
   },
@@ -173,7 +173,11 @@
     "Margin": {
       "Model": "None",
       "HouseMultiplier": null,
-      "RegTMode": "CBOEPermissive"
+      "RegTMode": null,
+      "PMConfig": null
+    },
+    "PositionMonitor": {
+      "TraceCollectionInterval": "Hourly"
     }
   },
   "MesoSimVersion": null

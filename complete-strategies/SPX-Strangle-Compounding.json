@@ -1,13 +1,13 @@
 {
   "Name": "generate",
-  "TemplateName": "[SPX-MultiLegAdjustment]",
+  "TemplateName": "[SPX-Strangle-Compounding]",
   "Description": "",
   "Start": "2023-01-01T00:00:00",
   "End": "2023-12-31T00:00:00",
   "Cash": "10000.0000",
   "Symbol": "SPX",
   "Structure": {
-    "Name": "Short Straddle",
+    "Name": "Compounding Short Strangle",
     "Expirations": [
       {
         "Name": "exp1",
@@ -24,12 +24,12 @@
         "OptionType": "Call",
         "ExpirationName": "exp1",
         "StrikeSelector": {
-          "Min": null,
-          "Max": null,
+          "Min": "5",
+          "Max": "15",
           "BidPrice": null,
           "AskPrice": null,
           "MidPrice": null,
-          "Delta": "50",
+          "Delta": "10",
           "Gamma": null,
           "Theta": null,
           "Vega": null,
@@ -46,12 +46,12 @@
         "OptionType": "Put",
         "ExpirationName": "exp1",
         "StrikeSelector": {
-          "Min": null,
-          "Max": null,
+          "Min": "5",
+          "Max": "15",
           "BidPrice": null,
           "AskPrice": null,
           "MidPrice": null,
-          "Delta": "50",
+          "Delta": "-1 * leg_short_call_delta",
           "Gamma": null,
           "Theta": null,
           "Vega": null,
@@ -71,13 +71,11 @@
       "Every": "day"
     },
     "Conditions": [],
-    "VarDefines": {
-      "underlying_price_at_entry": "underlying_price"
-    },
+    "VarDefines": {},
     "AbortConditions": [],
     "ReentryDays": "1",
     "Concurrency": null,
-    "QtyMultiplier": null
+    "QtyMultiplier": "floor(max(1, nav/initial_cash))"
   },
   "Adjustment": {
     "Schedule": {
@@ -86,7 +84,7 @@
       "Every": "day"
     },
     "ConditionalAdjustments": {
-      "underlying_price > underlying_price_at_entry * 0.99 -- Step 1: adjust short_call leg": {
+      "pos_delta > 5 * abs(leg_short_call_qty)": {
         "MoveLegAdjustment": {
           "LegName": "short_call",
           "StrikeSelector": {
@@ -95,7 +93,7 @@
             "BidPrice": null,
             "AskPrice": null,
             "MidPrice": null,
-            "Delta": "50",
+            "Delta": "(-1 * leg_short_put_delta) / abs(leg_short_call_qty)",
             "Gamma": null,
             "Theta": null,
             "Vega": null,
@@ -113,7 +111,7 @@
         "AddLegsAdjustment": null,
         "UpdateVarsAdjustment": null
       },
-      "underlying_price > underlying_price_at_entry * 0.99 -- Step 2: adjust short_put leg": {
+      "pos_delta < -5 * abs(leg_short_put_qty)": {
         "MoveLegAdjustment": {
           "LegName": "short_put",
           "StrikeSelector": {
@@ -122,7 +120,7 @@
             "BidPrice": null,
             "AskPrice": null,
             "MidPrice": null,
-            "Delta": "50",
+            "Delta": "(-1 * leg_short_call_delta) / abs(leg_short_put_qty)",
             "Gamma": null,
             "Theta": null,
             "Vega": null,
@@ -141,7 +139,7 @@
         "UpdateVarsAdjustment": null
       }
     },
-    "MaxAdjustmentCount": null
+    "MaxAdjustmentCount": "5"
   },
   "Exit": {
     "Schedule": {
@@ -173,7 +171,7 @@
       "PMConfig": null
     },
     "PositionMonitor": {
-      "TraceCollectionInterval": "Hourly"
+      "TraceCollectionInterval": "Daily"
     }
   },
   "MesoSimVersion": null
