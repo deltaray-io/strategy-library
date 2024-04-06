@@ -2,8 +2,8 @@
   "Name": "generate",
   "TemplateName": "[BTCUSD-Straddle]",
   "Description": "",
-  "Start": "2022-01-01T00:00:00",
-  "End": "2022-12-31T00:00:00",
+  "Start": "2023-01-01T00:00:00",
+  "End": "2023-12-31T00:00:00",
   "Cash": "1.0000",
   "Symbol": "BTCUSD",
   "Structure": {
@@ -21,6 +21,7 @@
       {
         "Name": "short_call",
         "Qty": "-0.9",
+        "OptionType": "Call",
         "ExpirationName": "exp1",
         "StrikeSelector": {
           "Min": null,
@@ -37,12 +38,12 @@
           "IV": null,
           "Statement": null,
           "Complex": null
-        },
-        "OptionType": "Call"
+        }
       },
       {
         "Name": "short_put",
         "Qty": "-0.9",
+        "OptionType": "Put",
         "ExpirationName": "exp1",
         "StrikeSelector": {
           "Min": null,
@@ -59,8 +60,7 @@
           "IV": null,
           "Statement": null,
           "Complex": null
-        },
-        "OptionType": "Put"
+        }
       }
     ]
   },
@@ -108,7 +108,10 @@
       }
     },
     "LegSelectionConstraint": "FullyUnique",
-    "Margin": null
+    "Margin": null,
+    "PositionMonitor": {
+      "TraceCollectionInterval": "Off"
+    }
   },
   "MesoSimVersion": null
 }

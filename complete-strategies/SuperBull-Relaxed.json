@@ -2,8 +2,8 @@
   "Name": "generate",
   "TemplateName": "[SuperBull-Relaxed]",
   "Description": "",
-  "Start": "2022-01-01T00:00:00",
-  "End": "2022-12-31T00:00:00",
+  "Start": "2023-01-01T00:00:00",
+  "End": "2023-12-31T00:00:00",
   "Cash": "10000.0000",
   "Symbol": "SPX",
   "Structure": {
@@ -26,6 +26,7 @@
       {
         "Name": "long",
         "Qty": "2",
+        "OptionType": "Call",
         "ExpirationName": "exp1",
         "StrikeSelector": {
           "Min": "48",
@@ -42,12 +43,12 @@
           "IV": null,
           "Statement": null,
           "Complex": null
-        },
-        "OptionType": "Call"
+        }
       },
       {
         "Name": "short",
         "Qty": "-2",
+        "OptionType": "Call",
         "ExpirationName": "exp1",
         "StrikeSelector": {
           "Min": null,
@@ -64,8 +65,7 @@
           "IV": null,
           "Statement": null,
           "Complex": null
-        },
-        "OptionType": "Call"
+        }
       }
     ]
   },
@@ -119,7 +119,11 @@
     "Margin": {
       "Model": "None",
       "HouseMultiplier": null,
-      "RegTMode": "CBOEPermissive"
+      "RegTMode": null,
+      "PMConfig": null
+    },
+    "PositionMonitor": {
+      "TraceCollectionInterval": "Hourly"
     }
   },
   "MesoSimVersion": null

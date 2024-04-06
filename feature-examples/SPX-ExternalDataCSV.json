@@ -21,6 +21,7 @@
       {
         "Name": "short_put",
         "Qty": "-1",
+        "OptionType": "Put",
         "ExpirationName": "exp1",
         "StrikeSelector": {
           "Min": "3",
@@ -37,8 +38,7 @@
           "IV": null,
           "Statement": null,
           "Complex": null
-        },
-        "OptionType": "Put"
+        }
       }
     ]
   },
@@ -88,7 +88,11 @@
     "Margin": {
       "Model": "None",
       "HouseMultiplier": null,
-      "RegTMode": "CBOEPermissive"
+      "RegTMode": null,
+      "PMConfig": null
+    },
+    "PositionMonitor": {
+      "TraceCollectionInterval": "Hourly"
     }
   },
   "MesoSimVersion": null

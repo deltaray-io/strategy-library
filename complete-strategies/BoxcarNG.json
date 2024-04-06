@@ -2,8 +2,8 @@
   "Name": "generate",
   "TemplateName": "[Boxcar-NG]",
   "Description": "",
-  "Start": "2022-01-01T00:00:00",
-  "End": "2022-12-31T00:00:00",
+  "Start": "2023-01-01T00:00:00",
+  "End": "2023-12-31T00:00:00",
   "Cash": "10000.0000",
   "Symbol": "SPX",
   "Structure": {
@@ -21,6 +21,7 @@
       {
         "Name": "pcs_short",
         "Qty": "-10",
+        "OptionType": "Put",
         "ExpirationName": "exp1",
         "StrikeSelector": {
           "Min": null,
@@ -37,12 +38,12 @@
           "IV": null,
           "Statement": null,
           "Complex": null
-        },
-        "OptionType": "Put"
+        }
       },
       {
         "Name": "pcs_long",
         "Qty": "10",
+        "OptionType": "Put",
         "ExpirationName": "exp1",
         "StrikeSelector": {
           "Min": null,
@@ -59,12 +60,12 @@
           "IV": null,
           "Statement": "leg_pcs_short_strike - 25",
           "Complex": null
-        },
-        "OptionType": "Put"
+        }
       },
       {
         "Name": "pds_long",
         "Qty": "1",
+        "OptionType": "Put",
         "ExpirationName": "exp1",
         "StrikeSelector": {
           "Min": null,
@@ -81,12 +82,12 @@
           "IV": null,
           "Statement": "floor(underlying_price/5)*5 - 1 * 5",
           "Complex": null
-        },
-        "OptionType": "Put"
+        }
       },
       {
         "Name": "pds_short",
         "Qty": "-1",
+        "OptionType": "Put",
         "ExpirationName": "exp1",
         "StrikeSelector": {
           "Min": null,
@@ -103,8 +104,7 @@
           "IV": null,
           "Statement": null,
           "Complex": null
-        },
-        "OptionType": "Put"
+        }
       }
     ]
   },
@@ -152,7 +152,11 @@
     "Margin": {
       "Model": "None",
       "HouseMultiplier": null,
-      "RegTMode": "CBOEPermissive"
+      "RegTMode": null,
+      "PMConfig": null
+    },
+    "PositionMonitor": {
+      "TraceCollectionInterval": "Hourly"
     }
   },
   "MesoSimVersion": null
