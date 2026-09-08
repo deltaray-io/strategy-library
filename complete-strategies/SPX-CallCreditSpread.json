@@ -1,0 +1,107 @@
+{
+  "StrategyName": "[SPX-CallCreditSpread]",
+  "Description": "",
+  "Backtest": {
+    "Name": "generate",
+    "Start": "2024-01-02T00:00:00",
+    "End": "2024-12-31T00:00:00",
+    "Cash": "100000"
+  },
+  "Symbol": "SPX",
+  "Structure": {
+    "Name": "Call Credit Spread",
+    "Expirations": [
+      {
+        "Name": "exp",
+        "DTE": "60",
+        "Min": "50",
+        "Max": "70",
+        "Roots": null
+      }
+    ],
+    "Legs": [
+      {
+        "Name": "short_call",
+        "Qty": "-1",
+        "OptionType": "Call",
+        "ExpirationName": "exp",
+        "StrikeSelector": {
+          "Min": null,
+          "Max": null,
+          "BidPrice": null,
+          "AskPrice": null,
+          "MidPrice": "25",
+          "StrikePrice": null,
+          "Delta": null,
+          "Complex": null
+        },
+        "LegGroupId": "0"
+      },
+      {
+        "Name": "long_call",
+        "Qty": "1",
+        "OptionType": "Call",
+        "ExpirationName": "exp",
+        "StrikeSelector": {
+          "Min": null,
+          "Max": null,
+          "BidPrice": null,
+          "AskPrice": null,
+          "MidPrice": "leg_short_call_price - 20",
+          "StrikePrice": null,
+          "Delta": null,
+          "Complex": null
+        },
+        "LegGroupId": "0"
+      }
+    ]
+  },
+  "Entry": {
+    "Schedule": {
+      "AfterMarketOpenMinutes": "30",
+      "BeforeMarketCloseMinutes": null,
+      "Every": "day"
+    },
+    "Conditions": [],
+    "VarDefines": null,
+    "AbortConditions": [],
+    "ReentryDays": "0",
+    "Concurrency": null,
+    "QtyMultiplier": null
+  },
+  "Adjustment": null,
+  "Exit": {
+    "Schedule": {
+      "AfterMarketOpenMinutes": null,
+      "BeforeMarketCloseMinutes": "30",
+      "Every": "day"
+    },
+    "MaxDaysInTrade": "30",
+    "ProfitTarget": null,
+    "StopLoss": null,
+    "Conditions": [],
+    "VarDefines": null
+  },
+  "ExternalData": null,
+  "Settings": {
+    "Core": {
+      "LegSelectionConstraint": "UniqueInPosition",
+      "ExpirationSelectionConstraint": "AbortOnReuse",
+      "Margin": null
+    },
+    "Sim": {
+      "FillModel": "AtMidPrice",
+      "SlippageAmt": "0",
+      "Commission": {
+        "CommissionModel": "FixedFee",
+        "OptionFee": "1.5",
+        "DeribitCommissionSettings": null
+      },
+      "PositionMonitor": {
+        "TraceCollectionInterval": "Daily"
+      }
+    },
+    "User": null
+  },
+  "MesoSimVersion": null
+}

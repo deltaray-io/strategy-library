@@ -1,0 +1,132 @@
+{
+  "StrategyName": "[SPX-AddLegAdjustment]",
+  "Description": "",
+  "Backtest": {
+    "Name": "generate",
+    "Start": "2021-01-02T00:00:00",
+    "End": "2021-12-31T00:00:00",
+    "Cash": "100000"
+  },
+  "Symbol": "SPX",
+  "Structure": {
+    "Name": "Short Put at initiation, then Long Put added",
+    "Expirations": [
+      {
+        "Name": "exp1",
+        "DTE": "45",
+        "Min": "35",
+        "Max": "55",
+        "Roots": null
+      }
+    ],
+    "Legs": [
+      {
+        "Name": "short_put",
+        "Qty": "-1",
+        "OptionType": "Put",
+        "ExpirationName": "exp1",
+        "StrikeSelector": {
+          "Min": "5",
+          "Max": "15",
+          "BidPrice": null,
+          "AskPrice": null,
+          "MidPrice": null,
+          "StrikePrice": null,
+          "Delta": "10",
+          "Complex": null
+        },
+        "LegGroupId": "0"
+      }
+    ]
+  },
+  "Entry": {
+    "Schedule": {
+      "AfterMarketOpenMinutes": null,
+      "BeforeMarketCloseMinutes": "30",
+      "Every": "day"
+    },
+    "Conditions": [],
+    "VarDefines": {
+      "short_put_initial_price": "leg_short_put_price"
+    },
+    "AbortConditions": [],
+    "ReentryDays": "0",
+    "Concurrency": null,
+    "QtyMultiplier": null
+  },
+  "Adjustment": {
+    "Schedule": {
+      "AfterMarketOpenMinutes": null,
+      "BeforeMarketCloseMinutes": "30",
+      "Every": "day"
+    },
+    "ConditionalAdjustments": {
+      "open_legs_cnt == 1": {
+        "MoveLegAdjustment": null,
+        "RemoveLegsAdjustment": null,
+        "AddLegsAdjustment": {
+          "Legs": [
+            {
+              "Name": "long_put",
+              "Qty": "1",
+              "OptionType": "Put",
+              "ExpirationName": "exp1",
+              "StrikeSelector": {
+                "Min": null,
+                "Max": null,
+                "BidPrice": null,
+                "AskPrice": null,
+                "MidPrice": null,
+                "StrikePrice": "leg_short_put_strike + 25",
+                "Delta": null,
+                "Complex": null
+              },
+              "LegGroupId": "0"
+            }
+          ],
+          "Expirations": null,
+          "AbortConditions": [
+            "leg_long_put_price > short_put_initial_price -- wait until long_put is cheaper than short_put"
+          ],
+          "VarDefines": null
+        },
+        "UpdateVarsAdjustment": null
+      }
+    },
+    "MaxAdjustmentCount": null
+  },
+  "Exit": {
+    "Schedule": {
+      "AfterMarketOpenMinutes": null,
+      "BeforeMarketCloseMinutes": "30",
+      "Every": "day"
+    },
+    "MaxDaysInTrade": "30",
+    "ProfitTarget": null,
+    "StopLoss": null,
+    "Conditions": [],
+    "VarDefines": null
+  },
+  "ExternalData": null,
+  "Settings": {
+    "Core": {
+      "LegSelectionConstraint": "UniqueInPosition",
+      "ExpirationSelectionConstraint": "AbortOnReuse",
+      "Margin": null
+    },
+    "Sim": {
+      "FillModel": "AtMidPrice",
+      "SlippageAmt": "0",
+      "Commission": {
+        "CommissionModel": "FixedFee",
+        "OptionFee": "1.5",
+        "DeribitCommissionSettings": null
+      },
+      "PositionMonitor": {
+        "TraceCollectionInterval": "Daily"
+      }
+    },
+    "User": null
+  },
+  "MesoSimVersion": null
+}

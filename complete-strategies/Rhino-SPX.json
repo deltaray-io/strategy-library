@@ -1,0 +1,388 @@
+{
+  "StrategyName": "Rhino-SPX",
+  "Description": "See https://blog.deltaray.io/rhino-options-strategy for details",
+  "Backtest": {
+    "Name": "Rhino-SPX",
+    "Start": "2018-10-02T00:00:00",
+    "End": "2025-11-11T00:00:00",
+    "Cash": "225000"
+  },
+  "Symbol": "SPX",
+  "Structure": {
+    "Name": "Rhino: OTM BWB + Calendars",
+    "Expirations": [
+      {
+        "Name": "exp77",
+        "DTE": "77",
+        "Min": "56",
+        "Max": "84",
+        "Roots": null
+      },
+      {
+        "Name": "exp107",
+        "DTE": "107",
+        "Min": null,
+        "Max": null,
+        "Roots": null
+      }
+    ],
+    "Legs": [
+      {
+        "Name": "bwb_upper_long",
+        "Qty": "1",
+        "OptionType": "Put",
+        "ExpirationName": "exp77",
+        "StrikeSelector": {
+          "Min": null,
+          "Max": null,
+          "BidPrice": null,
+          "AskPrice": null,
+          "MidPrice": null,
+          "StrikePrice": "floor((underlying_price - (vix < 12.5 and 15 or (vix > 19.5 and 35 or 25)))/5)*5",
+          "Delta": null,
+          "Complex": null
+        },
+        "LegGroupId": "0"
+      },
+      {
+        "Name": "bwb_shorts",
+        "Qty": "-2",
+        "OptionType": "Put",
+        "ExpirationName": "exp77",
+        "StrikeSelector": {
+          "Min": null,
+          "Max": null,
+          "BidPrice": null,
+          "AskPrice": null,
+          "MidPrice": null,
+          "StrikePrice": "leg_bwb_upper_long_strike - (vix < 12.5 and 75 or (vix > 19.5 and 125 or 100))",
+          "Delta": null,
+          "Complex": null
+        },
+        "LegGroupId": "0"
+      },
+      {
+        "Name": "bwb_lower_long",
+        "Qty": "1",
+        "OptionType": "Put",
+        "ExpirationName": "exp77",
+        "StrikeSelector": {
+          "Min": null,
+          "Max": null,
+          "BidPrice": null,
+          "AskPrice": null,
+          "MidPrice": null,
+          "StrikePrice": "leg_bwb_shorts_strike - (vix < 12.5 and 50 or (vix > 19.5 and 100 or 75))",
+          "Delta": null,
+          "Complex": null
+        },
+        "LegGroupId": "0"
+      },
+      {
+        "Name": "cal_short_call",
+        "Qty": "-1",
+        "OptionType": "Call",
+        "ExpirationName": "exp77",
+        "StrikeSelector": {
+          "Min": "25",
+          "Max": "35",
+          "BidPrice": null,
+          "AskPrice": null,
+          "MidPrice": null,
+          "StrikePrice": null,
+          "Delta": "30",
+          "Complex": null
+        },
+        "LegGroupId": "0"
+      },
+      {
+        "Name": "cal_long_call",
+        "Qty": "1",
+        "OptionType": "Call",
+        "ExpirationName": "exp107",
+        "StrikeSelector": {
+          "Min": null,
+          "Max": null,
+          "BidPrice": null,
+          "AskPrice": null,
+          "MidPrice": null,
+          "StrikePrice": null,
+          "Delta": "abs(pos_delta)",
+          "Complex": null
+        },
+        "LegGroupId": "0"
+      }
+    ]
+  },
+  "Entry": {
+    "Schedule": {
+      "AfterMarketOpenMinutes": null,
+      "BeforeMarketCloseMinutes": "30",
+      "Every": "day"
+    },
+    "Conditions": [
+      "underlying_price < underlying_today_open and underlying_today_open < underlying_prevday_close"
+    ],
+    "VarDefines": {
+      "otm_offset": "(vix < 12.5 and 15 or (vix > 19.5 and 35 or 25))",
+      "width_short": "(vix < 12.5 and 75 or (vix > 19.5 and 125 or 100))",
+      "width_lower": "(vix < 12.5 and 50 or (vix > 19.5 and 100 or 75))",
+      "cal2_added": "0",
+      "pds1_added": "0"
+    },
+    "AbortConditions": [],
+    "ReentryDays": "0",
+    "Concurrency": {
+      "MaxPositionsInFlight": "9",
+      "EntryShiftDays": "7"
+    },
+    "QtyMultiplier": null
+  },
+  "Adjustment": {
+    "Schedule": {
+      "AfterMarketOpenMinutes": null,
+      "BeforeMarketCloseMinutes": "30",
+      "Every": "day"
+    },
+    "ConditionalAdjustments": {
+      "leg_bwb_upper_long_dte <= 56 and leg_bwb_upper_long_dte >= 49 and open_legs_cnt == 5": {
+        "MoveLegAdjustment": null,
+        "RemoveLegsAdjustment": null,
+        "AddLegsAdjustment": {
+          "Legs": [
+            {
+              "Name": "bwb2_upper_long",
+              "Qty": "1",
+              "OptionType": "Put",
+              "ExpirationName": "exp77",
+              "StrikeSelector": {
+                "Min": null,
+                "Max": null,
+                "BidPrice": null,
+                "AskPrice": null,
+                "MidPrice": null,
+                "StrikePrice": "floor((underlying_price - (vix < 12.5 and 15 or (vix > 19.5 and 35 or 25)))/5)*5",
+                "Delta": null,
+                "Complex": null
+              },
+              "LegGroupId": "1"
+            },
+            {
+              "Name": "bwb2_shorts",
+              "Qty": "-2",
+              "OptionType": "Put",
+              "ExpirationName": "exp77",
+              "StrikeSelector": {
+                "Min": null,
+                "Max": null,
+                "BidPrice": null,
+                "AskPrice": null,
+                "MidPrice": null,
+                "StrikePrice": "leg_bwb2_upper_long_strike - (vix < 12.5 and 75 or (vix > 19.5 and 125 or 100))",
+                "Delta": null,
+                "Complex": null
+              },
+              "LegGroupId": "1"
+            },
+            {
+              "Name": "bwb2_lower_long",
+              "Qty": "1",
+              "OptionType": "Put",
+              "ExpirationName": "exp77",
+              "StrikeSelector": {
+                "Min": null,
+                "Max": null,
+                "BidPrice": null,
+                "AskPrice": null,
+                "MidPrice": null,
+                "StrikePrice": "leg_bwb2_shorts_strike - (vix < 12.5 and 50 or (vix > 19.5 and 100 or 75))",
+                "Delta": null,
+                "Complex": null
+              },
+              "LegGroupId": "1"
+            }
+          ],
+          "Expirations": null,
+          "AbortConditions": [],
+          "VarDefines": null
+        },
+        "UpdateVarsAdjustment": null
+      },
+      "pos_delta > 5 and cal2_added == 1": {
+        "MoveLegAdjustment": null,
+        "RemoveLegsAdjustment": {
+          "LegNames": [
+            "cal2_short_call",
+            "cal2_long_call"
+          ],
+          "VarDefines": {
+            "cal2_added": "0"
+          }
+        },
+        "AddLegsAdjustment": null,
+        "UpdateVarsAdjustment": null
+      },
+      "pos_delta < -5 and cal2_added == 0": {
+        "MoveLegAdjustment": null,
+        "RemoveLegsAdjustment": null,
+        "AddLegsAdjustment": {
+          "Legs": [
+            {
+              "Name": "cal2_short_call",
+              "Qty": "-1",
+              "OptionType": "Call",
+              "ExpirationName": "exp77",
+              "StrikeSelector": {
+                "Min": "25",
+                "Max": "35",
+                "BidPrice": null,
+                "AskPrice": null,
+                "MidPrice": null,
+                "StrikePrice": null,
+                "Delta": "30",
+                "Complex": null
+              },
+              "LegGroupId": "2"
+            },
+            {
+              "Name": "cal2_long_call",
+              "Qty": "1",
+              "OptionType": "Call",
+              "ExpirationName": "exp107",
+              "StrikeSelector": {
+                "Min": null,
+                "Max": null,
+                "BidPrice": null,
+                "AskPrice": null,
+                "MidPrice": null,
+                "StrikePrice": null,
+                "Delta": "abs(pos_delta)",
+                "Complex": null
+              },
+              "LegGroupId": "2"
+            }
+          ],
+          "Expirations": null,
+          "AbortConditions": [],
+          "VarDefines": null
+        },
+        "UpdateVarsAdjustment": {
+          "VarDefines": {
+            "cal2_added": "1"
+          }
+        }
+      },
+      "underlying_price < leg_bwb_shorts_strike and pds1_added == 0": {
+        "MoveLegAdjustment": null,
+        "RemoveLegsAdjustment": null,
+        "AddLegsAdjustment": {
+          "Legs": [
+            {
+              "Name": "pds1_long_put",
+              "Qty": "1",
+              "OptionType": "Put",
+              "ExpirationName": "exp77",
+              "StrikeSelector": {
+                "Min": null,
+                "Max": null,
+                "BidPrice": null,
+                "AskPrice": null,
+                "MidPrice": null,
+                "StrikePrice": "leg_bwb_shorts_strike - 30",
+                "Delta": null,
+                "Complex": null
+              },
+              "LegGroupId": "3"
+            },
+            {
+              "Name": "pds1_short_put",
+              "Qty": "-1",
+              "OptionType": "Put",
+              "ExpirationName": "exp77",
+              "StrikeSelector": {
+                "Min": null,
+                "Max": null,
+                "BidPrice": null,
+                "AskPrice": null,
+                "MidPrice": null,
+                "StrikePrice": "leg_bwb_shorts_strike - 10",
+                "Delta": null,
+                "Complex": null
+              },
+              "LegGroupId": "3"
+            }
+          ],
+          "Expirations": null,
+          "AbortConditions": [],
+          "VarDefines": null
+        },
+        "UpdateVarsAdjustment": {
+          "VarDefines": {
+            "pds1_added": "1"
+          }
+        }
+      },
+      "leg_bwb_upper_long_dte <= 28 and leg_bwb2_upper_long_strike ~= nil": {
+        "MoveLegAdjustment": null,
+        "RemoveLegsAdjustment": {
+          "LegNames": [
+            "bwb2_upper_long",
+            "bwb2_shorts",
+            "bwb2_lower_long"
+          ],
+          "VarDefines": null
+        },
+        "AddLegsAdjustment": null,
+        "UpdateVarsAdjustment": null
+      }
+    },
+    "MaxAdjustmentCount": null
+  },
+  "Exit": {
+    "Schedule": {
+      "AfterMarketOpenMinutes": null,
+      "BeforeMarketCloseMinutes": "30",
+      "Every": "day"
+    },
+    "MaxDaysInTrade": null,
+    "ProfitTarget": "25000 * 0.02",
+    "StopLoss": "25000 * 0.10",
+    "Conditions": [
+      "leg_bwb_upper_long_dte <= 14"
+    ],
+    "VarDefines": null
+  },
+  "ExternalData": {
+    "CsvUrl": "https://gist.githubusercontent.com/tibkiss/50552625466a75ba2f2236b7544f5f90/raw/c4d537993314ce5bd11424d46f11c5024874542a/vix-2010-20251113.csv"
+  },
+  "Settings": {
+    "Core": {
+      "LegSelectionConstraint": "UniqueInPosition",
+      "ExpirationSelectionConstraint": "AbortOnReuse",
+      "Margin": {
+        "Model": "PMLike",
+        "HouseMultiplier": null,
+        "RegTMode": null,
+        "PMConfig": {
+          "LowerBoundPct": 15,
+          "UpperBoundPct": 15,
+          "IncludeRealizedPnL": true
+        }
+      }
+    },
+    "Sim": {
+      "FillModel": "AtMidPrice",
+      "SlippageAmt": "0",
+      "Commission": {
+        "CommissionModel": "FixedFee",
+        "OptionFee": "1.5",
+        "DeribitCommissionSettings": null
+      },
+      "PositionMonitor": {
+        "TraceCollectionInterval": "Daily"
+      }
+    },
+    "User": null
+  },
+  "MesoSimVersion": null
+}

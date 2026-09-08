@@ -1,10 +1,12 @@
 {
-  "Name": "generate",
-  "TemplateName": "[SPX-Entry-DownDay]",
+  "StrategyName": "[SPX-Entry-DownDay]",
   "Description": "",
-  "Start": "2023-01-01T00:00:00",
-  "End": "2023-12-31T00:00:00",
-  "Cash": "10000.0000",
+  "Backtest": {
+    "Name": "generate",
+    "Start": "2021-01-02T00:00:00",
+    "End": "2021-12-31T00:00:00",
+    "Cash": "100000"
+  },
   "Symbol": "SPX",
   "Structure": {
     "Name": "ShortStrangle",
@@ -29,16 +31,11 @@
           "BidPrice": null,
           "AskPrice": null,
           "MidPrice": null,
+          "StrikePrice": null,
           "Delta": "10",
-          "Gamma": null,
-          "Theta": null,
-          "Vega": null,
-          "WVega": null,
-          "Rho": null,
-          "IV": null,
-          "Statement": null,
           "Complex": null
-        }
+        },
+        "LegGroupId": "0"
       },
       {
         "Name": "short_put",
@@ -51,16 +48,11 @@
           "BidPrice": null,
           "AskPrice": null,
           "MidPrice": null,
+          "StrikePrice": null,
           "Delta": "-1 * leg_short_call_delta",
-          "Gamma": null,
-          "Theta": null,
-          "Vega": null,
-          "WVega": null,
-          "Rho": null,
-          "IV": null,
-          "Statement": null,
           "Complex": null
-        }
+        },
+        "LegGroupId": "0"
       }
     ]
   },
@@ -77,7 +69,7 @@
       "initial_theta": "pos_theta"
     },
     "AbortConditions": [],
-    "ReentryDays": "1",
+    "ReentryDays": "0",
     "Concurrency": null,
     "QtyMultiplier": null
   },
@@ -97,14 +89,8 @@
             "BidPrice": null,
             "AskPrice": null,
             "MidPrice": null,
+            "StrikePrice": null,
             "Delta": "-1 * leg_short_call_delta",
-            "Gamma": null,
-            "Theta": null,
-            "Vega": null,
-            "WVega": null,
-            "Rho": null,
-            "IV": null,
-            "Statement": null,
             "Complex": null
           },
           "ExpirationName": null,
@@ -124,14 +110,8 @@
             "BidPrice": null,
             "AskPrice": null,
             "MidPrice": null,
+            "StrikePrice": null,
             "Delta": "-1 - leg_short_put_delta",
-            "Gamma": null,
-            "Theta": null,
-            "Vega": null,
-            "WVega": null,
-            "Rho": null,
-            "IV": null,
-            "Statement": null,
             "Complex": null
           },
           "ExpirationName": null,
@@ -159,26 +139,26 @@
     ],
     "VarDefines": null
   },
-  "Indicators": null,
   "ExternalData": null,
-  "SimSettings": {
-    "FillModel": "AtMidPrice",
-    "SlippageAmt": "0",
-    "Commission": {
-      "CommissionModel": "FixedFee",
-      "OptionFee": "1.5",
-      "DeribitCommissionSettings": null
+  "Settings": {
+    "Core": {
+      "LegSelectionConstraint": "UniqueInPosition",
+      "ExpirationSelectionConstraint": "AbortOnReuse",
+      "Margin": null
     },
-    "LegSelectionConstraint": "None",
-    "Margin": {
-      "Model": "None",
-      "HouseMultiplier": null,
-      "RegTMode": null,
-      "PMConfig": null
+    "Sim": {
+      "FillModel": "AtBidAsk",
+      "SlippageAmt": "0",
+      "Commission": {
+        "CommissionModel": "FixedFee",
+        "OptionFee": "1.5",
+        "DeribitCommissionSettings": null
+      },
+      "PositionMonitor": {
+        "TraceCollectionInterval": "Daily"
+      }
     },
-    "PositionMonitor": {
-      "TraceCollectionInterval": "Hourly"
-    }
+    "User": null
   },
   "MesoSimVersion": null
 }

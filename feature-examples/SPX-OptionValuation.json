@@ -1,0 +1,119 @@
+{
+  "StrategyName": "[SPX-OptionValuation]",
+  "Description": "Options Valuation Model Demonstration",
+  "Backtest": {
+    "Name": "CavernousAsp",
+    "Start": "2024-01-01T00:00:00",
+    "End": "2024-01-10T00:00:00",
+    "Cash": "100000"
+  },
+  "Symbol": "SPX",
+  "Structure": {
+    "Name": "Calendar",
+    "Expirations": [
+      {
+        "Name": "front",
+        "DTE": "130",
+        "Min": "120",
+        "Max": "140",
+        "Roots": null
+      },
+      {
+        "Name": "back",
+        "DTE": "expiration_front_dte + 40",
+        "Min": null,
+        "Max": null,
+        "Roots": null
+      }
+    ],
+    "Legs": [
+      {
+        "Name": "short_call",
+        "Qty": "-1",
+        "OptionType": "Call",
+        "ExpirationName": "front",
+        "StrikeSelector": {
+          "Min": null,
+          "Max": null,
+          "BidPrice": null,
+          "AskPrice": null,
+          "MidPrice": null,
+          "StrikePrice": "underlying_price",
+          "Delta": null,
+          "Complex": null
+        },
+        "LegGroupId": "0"
+      },
+      {
+        "Name": "long_call",
+        "Qty": "1",
+        "OptionType": "Call",
+        "ExpirationName": "back",
+        "StrikeSelector": {
+          "Min": null,
+          "Max": null,
+          "BidPrice": null,
+          "AskPrice": null,
+          "MidPrice": null,
+          "StrikePrice": "leg_short_call_strike",
+          "Delta": null,
+          "Complex": null
+        },
+        "LegGroupId": "0"
+      }
+    ]
+  },
+  "Entry": {
+    "Schedule": {
+      "AfterMarketOpenMinutes": null,
+      "BeforeMarketCloseMinutes": "30",
+      "Every": "day"
+    },
+    "Conditions": [],
+    "VarDefines": {
+      "breakeven_lower": "options.model_solver(position, leg_short_call_dte, underlying_price * 0.5, underlying_price * 2,  pnl, zero, return_price)",
+      "breakeven_upper": "options.model_solver(position, leg_short_call_dte, underlying_price * 2, underlying_price * 0.5,  pnl, zero, return_price)",
+      "max_win": "options.model_solver(position, leg_short_call_dte, underlying_price * 2, underlying_price * 0.5,  pnl, maximize, return_value)",
+      "max_loss": "options.model_solver(position, leg_short_call_dte, underlying_price * 2, underlying_price * 0.5,  pnl, minimize, return_value)"
+    },
+    "AbortConditions": [],
+    "ReentryDays": "1",
+    "Concurrency": null,
+    "QtyMultiplier": null
+  },
+  "Adjustment": null,
+  "Exit": {
+    "Schedule": {
+      "AfterMarketOpenMinutes": null,
+      "BeforeMarketCloseMinutes": "30",
+      "Every": "day"
+    },
+    "MaxDaysInTrade": "90",
+    "ProfitTarget": "pos_theta * 90 * 0.8",
+    "StopLoss": "profit_target * 2",
+    "Conditions": [],
+    "VarDefines": null
+  },
+  "ExternalData": null,
+  "Settings": {
+    "Core": {
+      "LegSelectionConstraint": "FullyUnique",
+      "ExpirationSelectionConstraint": "AbortOnReuse",
+      "Margin": null
+    },
+    "Sim": {
+      "FillModel": "AtMidPrice",
+      "SlippageAmt": "0",
+      "Commission": {
+        "CommissionModel": "FixedFee",
+        "OptionFee": "1.5",
+        "DeribitCommissionSettings": null
+      },
+      "PositionMonitor": {
+        "TraceCollectionInterval": "Daily"
+      }
+    },
+    "User": null
+  },
+  "MesoSimVersion": null
+}

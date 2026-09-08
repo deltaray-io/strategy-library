@@ -1,0 +1,153 @@
+{
+  "StrategyName": "[SPX-AddPDSAdjustment]",
+  "Description": "",
+  "Backtest": {
+    "Name": "generate",
+    "Start": "2021-01-02T00:00:00",
+    "End": "2021-12-31T00:00:00",
+    "Cash": "100000"
+  },
+  "Symbol": "SPX",
+  "Structure": {
+    "Name": "Long Call at initiation, then Put Debit Spread added",
+    "Expirations": [
+      {
+        "Name": "exp1",
+        "DTE": "45",
+        "Min": "35",
+        "Max": "55",
+        "Roots": null
+      }
+    ],
+    "Legs": [
+      {
+        "Name": "long_call",
+        "Qty": "1",
+        "OptionType": "Call",
+        "ExpirationName": "exp1",
+        "StrikeSelector": {
+          "Min": "20",
+          "Max": "30",
+          "BidPrice": null,
+          "AskPrice": null,
+          "MidPrice": null,
+          "StrikePrice": null,
+          "Delta": "25",
+          "Complex": null
+        },
+        "LegGroupId": "0"
+      }
+    ]
+  },
+  "Entry": {
+    "Schedule": {
+      "AfterMarketOpenMinutes": null,
+      "BeforeMarketCloseMinutes": "30",
+      "Every": "day"
+    },
+    "Conditions": [],
+    "VarDefines": {},
+    "AbortConditions": [],
+    "ReentryDays": "0",
+    "Concurrency": null,
+    "QtyMultiplier": null
+  },
+  "Adjustment": {
+    "Schedule": {
+      "AfterMarketOpenMinutes": null,
+      "BeforeMarketCloseMinutes": "30",
+      "Every": "day"
+    },
+    "ConditionalAdjustments": {
+      "open_legs_cnt == 1": {
+        "MoveLegAdjustment": null,
+        "RemoveLegsAdjustment": null,
+        "AddLegsAdjustment": {
+          "Legs": [
+            {
+              "Name": "pds_short",
+              "Qty": "-1",
+              "OptionType": "Put",
+              "ExpirationName": "exp2",
+              "StrikeSelector": {
+                "Min": "5",
+                "Max": "15",
+                "BidPrice": null,
+                "AskPrice": null,
+                "MidPrice": null,
+                "StrikePrice": null,
+                "Delta": "10",
+                "Complex": null
+              },
+              "LegGroupId": "0"
+            },
+            {
+              "Name": "pds_long",
+              "Qty": "1",
+              "OptionType": "Put",
+              "ExpirationName": "exp2",
+              "StrikeSelector": {
+                "Min": "10",
+                "Max": "20",
+                "BidPrice": null,
+                "AskPrice": null,
+                "MidPrice": null,
+                "StrikePrice": null,
+                "Delta": "15",
+                "Complex": null
+              },
+              "LegGroupId": "0"
+            }
+          ],
+          "Expirations": [
+            {
+              "Name": "exp2",
+              "DTE": "expiration_exp1_dte + 100",
+              "Min": null,
+              "Max": null,
+              "Roots": null
+            }
+          ],
+          "AbortConditions": null,
+          "VarDefines": null
+        },
+        "UpdateVarsAdjustment": null
+      }
+    },
+    "MaxAdjustmentCount": null
+  },
+  "Exit": {
+    "Schedule": {
+      "AfterMarketOpenMinutes": null,
+      "BeforeMarketCloseMinutes": "30",
+      "Every": "day"
+    },
+    "MaxDaysInTrade": "30",
+    "ProfitTarget": null,
+    "StopLoss": null,
+    "Conditions": [],
+    "VarDefines": null
+  },
+  "ExternalData": null,
+  "Settings": {
+    "Core": {
+      "LegSelectionConstraint": "UniqueInPosition",
+      "ExpirationSelectionConstraint": "AbortOnReuse",
+      "Margin": null
+    },
+    "Sim": {
+      "FillModel": "AtMidPrice",
+      "SlippageAmt": "0",
+      "Commission": {
+        "CommissionModel": "FixedFee",
+        "OptionFee": "1.5",
+        "DeribitCommissionSettings": null
+      },
+      "PositionMonitor": {
+        "TraceCollectionInterval": "Daily"
+      }
+    },
+    "User": null
+  },
+  "MesoSimVersion": null
+}

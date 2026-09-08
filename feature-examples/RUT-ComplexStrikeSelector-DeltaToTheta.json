@@ -1,0 +1,176 @@
+{
+  "StrategyName": "[RUT-ComplexStrikeSelector-DeltaToTheta]",
+  "Description": "",
+  "Backtest": {
+    "Name": "generate",
+    "Start": "2021-01-02T00:00:00",
+    "End": "2021-12-31T00:00:00",
+    "Cash": "100000"
+  },
+  "Symbol": "RUT",
+  "Structure": {
+    "Name": "PDS",
+    "Expirations": [
+      {
+        "Name": "exp1",
+        "DTE": "160",
+        "Min": "140",
+        "Max": "190",
+        "Roots": null
+      }
+    ],
+    "Legs": [
+      {
+        "Name": "short",
+        "Qty": "-1",
+        "OptionType": "Put",
+        "ExpirationName": "exp1",
+        "StrikeSelector": {
+          "Min": null,
+          "Max": null,
+          "BidPrice": null,
+          "AskPrice": null,
+          "MidPrice": null,
+          "StrikePrice": null,
+          "Delta": "30",
+          "Complex": null
+        },
+        "LegGroupId": "0"
+      },
+      {
+        "Name": "long",
+        "Qty": "1",
+        "OptionType": "Put",
+        "ExpirationName": "exp1",
+        "StrikeSelector": {
+          "Min": null,
+          "Max": null,
+          "BidPrice": null,
+          "AskPrice": null,
+          "MidPrice": null,
+          "StrikePrice": null,
+          "Delta": null,
+          "Complex": {
+            "Statement": "pos_delta / pos_theta",
+            "Target": "0.5",
+            "Constraints": [
+              "leg_long_strike < leg_short_strike"
+            ]
+          }
+        },
+        "LegGroupId": "0"
+      }
+    ]
+  },
+  "Entry": {
+    "Schedule": {
+      "AfterMarketOpenMinutes": null,
+      "BeforeMarketCloseMinutes": "30",
+      "Every": "day"
+    },
+    "Conditions": [],
+    "VarDefines": {},
+    "AbortConditions": [],
+    "ReentryDays": "0",
+    "Concurrency": null,
+    "QtyMultiplier": null
+  },
+  "Adjustment": {
+    "Schedule": {
+      "AfterMarketOpenMinutes": null,
+      "BeforeMarketCloseMinutes": "30",
+      "Every": "day"
+    },
+    "ConditionalAdjustments": {
+      "pos_delta/pos_theta > 0.8": {
+        "MoveLegAdjustment": {
+          "LegName": "short",
+          "StrikeSelector": {
+            "Min": null,
+            "Max": null,
+            "BidPrice": null,
+            "AskPrice": null,
+            "MidPrice": null,
+            "StrikePrice": null,
+            "Delta": null,
+            "Complex": {
+              "Statement": "pos_delta / pos_theta",
+              "Target": "0.5",
+              "Constraints": [
+                "leg_long_strike < leg_short_strike"
+              ]
+            }
+          },
+          "ExpirationName": null,
+          "Expirations": null,
+          "VarDefines": null
+        },
+        "RemoveLegsAdjustment": null,
+        "AddLegsAdjustment": null,
+        "UpdateVarsAdjustment": null
+      },
+      "pos_delta/pos_theta < 0.2": {
+        "MoveLegAdjustment": {
+          "LegName": "long",
+          "StrikeSelector": {
+            "Min": null,
+            "Max": null,
+            "BidPrice": null,
+            "AskPrice": null,
+            "MidPrice": null,
+            "StrikePrice": null,
+            "Delta": null,
+            "Complex": {
+              "Statement": "pos_delta / pos_theta",
+              "Target": "0.5",
+              "Constraints": [
+                "leg_long_strike < leg_short_strike"
+              ]
+            }
+          },
+          "ExpirationName": null,
+          "Expirations": null,
+          "VarDefines": null
+        },
+        "RemoveLegsAdjustment": null,
+        "AddLegsAdjustment": null,
+        "UpdateVarsAdjustment": null
+      }
+    },
+    "MaxAdjustmentCount": "5"
+  },
+  "Exit": {
+    "Schedule": {
+      "AfterMarketOpenMinutes": null,
+      "BeforeMarketCloseMinutes": "30",
+      "Every": "day"
+    },
+    "MaxDaysInTrade": "90",
+    "ProfitTarget": null,
+    "StopLoss": null,
+    "Conditions": [],
+    "VarDefines": null
+  },
+  "ExternalData": null,
+  "Settings": {
+    "Core": {
+      "LegSelectionConstraint": "UniqueInPosition",
+      "ExpirationSelectionConstraint": "AbortOnReuse",
+      "Margin": null
+    },
+    "Sim": {
+      "FillModel": "AtMidPrice",
+      "SlippageAmt": "0",
+      "Commission": {
+        "CommissionModel": "FixedFee",
+        "OptionFee": "1.5",
+        "DeribitCommissionSettings": null
+      },
+      "PositionMonitor": {
+        "TraceCollectionInterval": "Daily"
+      }
+    },
+    "User": null
+  },
+  "MesoSimVersion": null
+}

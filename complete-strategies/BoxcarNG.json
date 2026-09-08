@@ -1,10 +1,12 @@
 {
-  "Name": "generate",
-  "TemplateName": "[Boxcar-NG]",
+  "StrategyName": "[Boxcar-NG]",
   "Description": "",
-  "Start": "2023-01-01T00:00:00",
-  "End": "2023-12-31T00:00:00",
-  "Cash": "10000.0000",
+  "Backtest": {
+    "Name": "generate",
+    "Start": "2021-01-02T00:00:00",
+    "End": "2021-12-31T00:00:00",
+    "Cash": "100000"
+  },
   "Symbol": "SPX",
   "Structure": {
     "Name": "Boxcar-NG",
@@ -29,16 +31,11 @@
           "BidPrice": null,
           "AskPrice": null,
           "MidPrice": null,
+          "StrikePrice": null,
           "Delta": "10",
-          "Gamma": null,
-          "Theta": null,
-          "Vega": null,
-          "WVega": null,
-          "Rho": null,
-          "IV": null,
-          "Statement": null,
           "Complex": null
-        }
+        },
+        "LegGroupId": "0"
       },
       {
         "Name": "pcs_long",
@@ -51,16 +48,11 @@
           "BidPrice": null,
           "AskPrice": null,
           "MidPrice": null,
+          "StrikePrice": "leg_pcs_short_strike - 25",
           "Delta": null,
-          "Gamma": null,
-          "Theta": null,
-          "Vega": null,
-          "WVega": null,
-          "Rho": null,
-          "IV": null,
-          "Statement": "leg_pcs_short_strike - 25",
           "Complex": null
-        }
+        },
+        "LegGroupId": "0"
       },
       {
         "Name": "pds_long",
@@ -73,16 +65,11 @@
           "BidPrice": null,
           "AskPrice": null,
           "MidPrice": null,
+          "StrikePrice": "floor(underlying_price/5)*5 - 1 * 5",
           "Delta": null,
-          "Gamma": null,
-          "Theta": null,
-          "Vega": null,
-          "WVega": null,
-          "Rho": null,
-          "IV": null,
-          "Statement": "floor(underlying_price/5)*5 - 1 * 5",
           "Complex": null
-        }
+        },
+        "LegGroupId": "0"
       },
       {
         "Name": "pds_short",
@@ -95,16 +82,11 @@
           "BidPrice": null,
           "AskPrice": null,
           "MidPrice": null,
+          "StrikePrice": null,
           "Delta": "-1 * pos_delta",
-          "Gamma": null,
-          "Theta": null,
-          "Vega": null,
-          "WVega": null,
-          "Rho": null,
-          "IV": null,
-          "Statement": null,
           "Complex": null
-        }
+        },
+        "LegGroupId": "0"
       }
     ]
   },
@@ -138,26 +120,26 @@
     ],
     "VarDefines": null
   },
-  "Indicators": null,
   "ExternalData": null,
-  "SimSettings": {
-    "FillModel": "AtMidPrice",
-    "SlippageAmt": "0",
-    "Commission": {
-      "CommissionModel": "FixedFee",
-      "OptionFee": "1.5",
-      "DeribitCommissionSettings": null
+  "Settings": {
+    "Core": {
+      "LegSelectionConstraint": "UniqueInPosition",
+      "ExpirationSelectionConstraint": "AbortOnReuse",
+      "Margin": null
     },
-    "LegSelectionConstraint": "None",
-    "Margin": {
-      "Model": "None",
-      "HouseMultiplier": null,
-      "RegTMode": null,
-      "PMConfig": null
+    "Sim": {
+      "FillModel": "AtBidAsk",
+      "SlippageAmt": "0",
+      "Commission": {
+        "CommissionModel": "FixedFee",
+        "OptionFee": "1.5",
+        "DeribitCommissionSettings": null
+      },
+      "PositionMonitor": {
+        "TraceCollectionInterval": "Daily"
+      }
     },
-    "PositionMonitor": {
-      "TraceCollectionInterval": "Hourly"
-    }
+    "User": null
   },
   "MesoSimVersion": null
 }

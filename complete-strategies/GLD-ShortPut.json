@@ -1,0 +1,90 @@
+{
+  "StrategyName": "[GLD-Short-Put]",
+  "Description": "",
+  "Backtest": {
+    "Name": "generate",
+    "Start": "2021-01-02T00:00:00",
+    "End": "2021-12-31T00:00:00",
+    "Cash": "100000"
+  },
+  "Symbol": "GLD",
+  "Structure": {
+    "Name": "Short Put",
+    "Expirations": [
+      {
+        "Name": "exp1",
+        "DTE": "45",
+        "Min": "35",
+        "Max": "55",
+        "Roots": null
+      }
+    ],
+    "Legs": [
+      {
+        "Name": "short_put",
+        "Qty": "-1",
+        "OptionType": "Put",
+        "ExpirationName": "exp1",
+        "StrikeSelector": {
+          "Min": null,
+          "Max": null,
+          "BidPrice": null,
+          "AskPrice": null,
+          "MidPrice": null,
+          "StrikePrice": null,
+          "Delta": "30",
+          "Complex": null
+        },
+        "LegGroupId": "0"
+      }
+    ]
+  },
+  "Entry": {
+    "Schedule": {
+      "AfterMarketOpenMinutes": null,
+      "BeforeMarketCloseMinutes": "30",
+      "Every": "day"
+    },
+    "Conditions": [],
+    "VarDefines": {},
+    "AbortConditions": [],
+    "ReentryDays": "0",
+    "Concurrency": null,
+    "QtyMultiplier": null
+  },
+  "Adjustment": null,
+  "Exit": {
+    "Schedule": {
+      "AfterMarketOpenMinutes": null,
+      "BeforeMarketCloseMinutes": "30",
+      "Every": "day"
+    },
+    "MaxDaysInTrade": "30",
+    "ProfitTarget": null,
+    "StopLoss": null,
+    "Conditions": [],
+    "VarDefines": null
+  },
+  "ExternalData": null,
+  "Settings": {
+    "Core": {
+      "LegSelectionConstraint": "UniqueInPosition",
+      "ExpirationSelectionConstraint": "AbortOnReuse",
+      "Margin": null
+    },
+    "Sim": {
+      "FillModel": "AtMidPrice",
+      "SlippageAmt": "0",
+      "Commission": {
+        "CommissionModel": "FixedFee",
+        "OptionFee": "1.5",
+        "DeribitCommissionSettings": null
+      },
+      "PositionMonitor": {
+        "TraceCollectionInterval": "Daily"
+      }
+    },
+    "User": null
+  },
+  "MesoSimVersion": null
+}

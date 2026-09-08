@@ -1,0 +1,119 @@
+{
+  "StrategyName": "[SPX-PutDebitSpread]",
+  "Description": "",
+  "Backtest": {
+    "Name": "generate",
+    "Start": "2024-01-02T00:00:00",
+    "End": "2024-12-31T00:00:00",
+    "Cash": "100000"
+  },
+  "Symbol": "SPX",
+  "Structure": {
+    "Name": "Put Debit Spread",
+    "Expirations": [
+      {
+        "Name": "exp",
+        "DTE": "30",
+        "Min": "25",
+        "Max": "35",
+        "Roots": null
+      }
+    ],
+    "Legs": [
+      {
+        "Name": "long_put",
+        "Qty": "1",
+        "OptionType": "Put",
+        "ExpirationName": "exp",
+        "StrikeSelector": {
+          "Min": null,
+          "Max": null,
+          "BidPrice": null,
+          "AskPrice": null,
+          "MidPrice": null,
+          "StrikePrice": null,
+          "Delta": null,
+          "Complex": {
+            "Statement": "leg_long_put_strike",
+            "Target": "underlying_price + 100",
+            "Constraints": [
+              "leg_long_put_strike % 25 == 0"
+            ]
+          }
+        },
+        "LegGroupId": "0"
+      },
+      {
+        "Name": "short_put",
+        "Qty": "-1",
+        "OptionType": "Put",
+        "ExpirationName": "exp",
+        "StrikeSelector": {
+          "Min": null,
+          "Max": null,
+          "BidPrice": null,
+          "AskPrice": null,
+          "MidPrice": null,
+          "StrikePrice": null,
+          "Delta": null,
+          "Complex": {
+            "Statement": "leg_short_put_strike",
+            "Target": "underlying_price - 100",
+            "Constraints": [
+              "leg_short_put_strike % 25 == 0"
+            ]
+          }
+        },
+        "LegGroupId": "0"
+      }
+    ]
+  },
+  "Entry": {
+    "Schedule": {
+      "AfterMarketOpenMinutes": "30",
+      "BeforeMarketCloseMinutes": null,
+      "Every": "day"
+    },
+    "Conditions": [],
+    "VarDefines": null,
+    "AbortConditions": [],
+    "ReentryDays": "0",
+    "Concurrency": null,
+    "QtyMultiplier": null
+  },
+  "Adjustment": null,
+  "Exit": {
+    "Schedule": {
+      "AfterMarketOpenMinutes": null,
+      "BeforeMarketCloseMinutes": "30",
+      "Every": "day"
+    },
+    "MaxDaysInTrade": "30",
+    "ProfitTarget": null,
+    "StopLoss": null,
+    "Conditions": [],
+    "VarDefines": null
+  },
+  "ExternalData": null,
+  "Settings": {
+    "Core": {
+      "LegSelectionConstraint": "UniqueInPosition",
+      "ExpirationSelectionConstraint": "AbortOnReuse",
+      "Margin": null
+    },
+    "Sim": {
+      "FillModel": "AtMidPrice",
+      "SlippageAmt": "0",
+      "Commission": {
+        "CommissionModel": "FixedFee",
+        "OptionFee": "1.5",
+        "DeribitCommissionSettings": null
+      },
+      "PositionMonitor": {
+        "TraceCollectionInterval": "Daily"
+      }
+    },
+    "User": null
+  },
+  "MesoSimVersion": null
+}

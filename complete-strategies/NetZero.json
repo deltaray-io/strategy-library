@@ -1,10 +1,12 @@
 {
-  "Name": "generate",
-  "TemplateName": "[NetZero]",
+  "StrategyName": "[NetZero]",
   "Description": "",
-  "Start": "2023-01-01T00:00:00",
-  "End": "2023-12-31T00:00:00",
-  "Cash": "10000.0000",
+  "Backtest": {
+    "Name": "generate",
+    "Start": "2022-01-02T00:00:00",
+    "End": "2022-12-31T00:00:00",
+    "Cash": "100000"
+  },
   "Symbol": "SPX",
   "Structure": {
     "Name": "Broken Wing Butterfly",
@@ -29,16 +31,11 @@
           "BidPrice": null,
           "AskPrice": null,
           "MidPrice": null,
+          "StrikePrice": null,
           "Delta": "60",
-          "Gamma": null,
-          "Theta": null,
-          "Vega": null,
-          "WVega": null,
-          "Rho": null,
-          "IV": null,
-          "Statement": null,
           "Complex": null
-        }
+        },
+        "LegGroupId": "0"
       },
       {
         "Name": "shorts",
@@ -51,16 +48,11 @@
           "BidPrice": null,
           "AskPrice": null,
           "MidPrice": null,
+          "StrikePrice": null,
           "Delta": "40",
-          "Gamma": null,
-          "Theta": null,
-          "Vega": null,
-          "WVega": null,
-          "Rho": null,
-          "IV": null,
-          "Statement": null,
           "Complex": null
-        }
+        },
+        "LegGroupId": "0"
       },
       {
         "Name": "lower_long",
@@ -73,16 +65,11 @@
           "BidPrice": null,
           "AskPrice": null,
           "MidPrice": null,
+          "StrikePrice": null,
           "Delta": "pos_delta",
-          "Gamma": null,
-          "Theta": null,
-          "Vega": null,
-          "WVega": null,
-          "Rho": null,
-          "IV": null,
-          "Statement": null,
           "Complex": null
-        }
+        },
+        "LegGroupId": "0"
       }
     ]
   },
@@ -125,26 +112,26 @@
     ],
     "VarDefines": null
   },
-  "Indicators": null,
   "ExternalData": null,
-  "SimSettings": {
-    "FillModel": "AtMidPrice",
-    "SlippageAmt": "0",
-    "Commission": {
-      "CommissionModel": "FixedFee",
-      "OptionFee": "1.5",
-      "DeribitCommissionSettings": null
+  "Settings": {
+    "Core": {
+      "LegSelectionConstraint": "UniqueInPosition",
+      "ExpirationSelectionConstraint": "AbortOnReuse",
+      "Margin": null
     },
-    "LegSelectionConstraint": "FullyUnique",
-    "Margin": {
-      "Model": "None",
-      "HouseMultiplier": null,
-      "RegTMode": null,
-      "PMConfig": null
+    "Sim": {
+      "FillModel": "AtMidPrice",
+      "SlippageAmt": "0",
+      "Commission": {
+        "CommissionModel": "FixedFee",
+        "OptionFee": "1.5",
+        "DeribitCommissionSettings": null
+      },
+      "PositionMonitor": {
+        "TraceCollectionInterval": "Daily"
+      }
     },
-    "PositionMonitor": {
-      "TraceCollectionInterval": "Hourly"
-    }
+    "User": null
   },
   "MesoSimVersion": null
 }

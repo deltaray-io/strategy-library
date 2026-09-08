@@ -1,10 +1,12 @@
 {
-  "Name": "generate",
-  "TemplateName": "[SPX-120DTE-IronCondor]",
+  "StrategyName": "[SPX-120DTE-IronCondor]",
   "Description": "",
-  "Start": "2023-01-01T00:00:00",
-  "End": "2023-12-31T00:00:00",
-  "Cash": "10000.0000",
+  "Backtest": {
+    "Name": "generate",
+    "Start": "2021-01-02T00:00:00",
+    "End": "2021-12-31T00:00:00",
+    "Cash": "100000"
+  },
   "Symbol": "SPX",
   "Structure": {
     "Name": "Asymmetric Iron Condor (AIC)",
@@ -29,16 +31,11 @@
           "BidPrice": null,
           "AskPrice": null,
           "MidPrice": null,
+          "StrikePrice": null,
           "Delta": "15",
-          "Gamma": null,
-          "Theta": null,
-          "Vega": null,
-          "WVega": null,
-          "Rho": null,
-          "IV": null,
-          "Statement": null,
           "Complex": null
-        }
+        },
+        "LegGroupId": "0"
       },
       {
         "Name": "long_put",
@@ -51,16 +48,11 @@
           "BidPrice": null,
           "AskPrice": null,
           "MidPrice": null,
+          "StrikePrice": null,
           "Delta": "7",
-          "Gamma": null,
-          "Theta": null,
-          "Vega": null,
-          "WVega": null,
-          "Rho": null,
-          "IV": null,
-          "Statement": null,
           "Complex": null
-        }
+        },
+        "LegGroupId": "0"
       },
       {
         "Name": "short_call",
@@ -73,16 +65,11 @@
           "BidPrice": null,
           "AskPrice": null,
           "MidPrice": null,
+          "StrikePrice": null,
           "Delta": "15",
-          "Gamma": null,
-          "Theta": null,
-          "Vega": null,
-          "WVega": null,
-          "Rho": null,
-          "IV": null,
-          "Statement": null,
           "Complex": null
-        }
+        },
+        "LegGroupId": "0"
       },
       {
         "Name": "long_call",
@@ -95,16 +82,11 @@
           "BidPrice": null,
           "AskPrice": null,
           "MidPrice": null,
+          "StrikePrice": null,
           "Delta": "7",
-          "Gamma": null,
-          "Theta": null,
-          "Vega": null,
-          "WVega": null,
-          "Rho": null,
-          "IV": null,
-          "Statement": null,
           "Complex": null
-        }
+        },
+        "LegGroupId": "0"
       }
     ]
   },
@@ -117,7 +99,7 @@
     "Conditions": [],
     "VarDefines": null,
     "AbortConditions": [],
-    "ReentryDays": "1",
+    "ReentryDays": "0",
     "Concurrency": null,
     "QtyMultiplier": null
   },
@@ -134,26 +116,26 @@
     "Conditions": [],
     "VarDefines": null
   },
-  "Indicators": null,
   "ExternalData": null,
-  "SimSettings": {
-    "FillModel": "AtMidPrice",
-    "SlippageAmt": "0",
-    "Commission": {
-      "CommissionModel": "FixedFee",
-      "OptionFee": "1.5",
-      "DeribitCommissionSettings": null
+  "Settings": {
+    "Core": {
+      "LegSelectionConstraint": "UniqueInPosition",
+      "ExpirationSelectionConstraint": "AbortOnReuse",
+      "Margin": null
     },
-    "LegSelectionConstraint": "None",
-    "Margin": {
-      "Model": "None",
-      "HouseMultiplier": null,
-      "RegTMode": null,
-      "PMConfig": null
+    "Sim": {
+      "FillModel": "AtMidPrice",
+      "SlippageAmt": "0.01",
+      "Commission": {
+        "CommissionModel": "FixedFee",
+        "OptionFee": "1.5",
+        "DeribitCommissionSettings": null
+      },
+      "PositionMonitor": {
+        "TraceCollectionInterval": "Daily"
+      }
     },
-    "PositionMonitor": {
-      "TraceCollectionInterval": "Hourly"
-    }
+    "User": null
   },
   "MesoSimVersion": null
 }

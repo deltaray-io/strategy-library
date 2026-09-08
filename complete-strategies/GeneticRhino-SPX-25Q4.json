@@ -1,0 +1,223 @@
+{
+  "StrategyName": "GeneticRhino-SPX-25Q4",
+  "Description": "See https://blog.deltaray.io/rhino-options-strategy for details",
+  "Backtest": {
+    "Name": "rhino_5aa7e8308b5303b2",
+    "Start": "2022-01-01T00:00:00",
+    "End": "2025-10-31T23:59:59",
+    "Cash": "250000.0000"
+  },
+  "Symbol": "SPX",
+  "Structure": {
+    "Name": "Rhino-like",
+    "Expirations": [
+      {
+        "Name": "exp1",
+        "DTE": "99",
+        "Min": null,
+        "Max": null,
+        "Roots": null
+      },
+      {
+        "Name": "exp2",
+        "DTE": "110",
+        "Min": "110",
+        "Max": null,
+        "Roots": null
+      }
+    ],
+    "Legs": [
+      {
+        "Name": "short_put",
+        "Qty": "-2",
+        "OptionType": "Put",
+        "ExpirationName": "exp1",
+        "StrikeSelector": {
+          "Min": null,
+          "Max": null,
+          "BidPrice": null,
+          "AskPrice": null,
+          "MidPrice": null,
+          "StrikePrice": null,
+          "Delta": "22",
+          "Complex": null
+        },
+        "LegGroupId": "0"
+      },
+      {
+        "Name": "lower_long_put",
+        "Qty": "1",
+        "OptionType": "Put",
+        "ExpirationName": "exp1",
+        "StrikeSelector": {
+          "Min": null,
+          "Max": "leg_short_put_delta / abs(leg_short_put_qty)",
+          "BidPrice": null,
+          "AskPrice": null,
+          "MidPrice": null,
+          "StrikePrice": null,
+          "Delta": "6",
+          "Complex": null
+        },
+        "LegGroupId": "0"
+      },
+      {
+        "Name": "upper_long_put",
+        "Qty": "1",
+        "OptionType": "Put",
+        "ExpirationName": "exp1",
+        "StrikeSelector": {
+          "Min": "leg_short_put_delta / abs(leg_short_put_qty)",
+          "Max": "50",
+          "BidPrice": null,
+          "AskPrice": null,
+          "MidPrice": null,
+          "StrikePrice": null,
+          "Delta": "46",
+          "Complex": null
+        },
+        "LegGroupId": "0"
+      },
+      {
+        "Name": "short_call",
+        "Qty": "-1",
+        "OptionType": "Call",
+        "ExpirationName": "exp1",
+        "StrikeSelector": {
+          "Min": null,
+          "Max": "50",
+          "BidPrice": null,
+          "AskPrice": null,
+          "MidPrice": null,
+          "StrikePrice": null,
+          "Delta": "24",
+          "Complex": null
+        },
+        "LegGroupId": "1"
+      },
+      {
+        "Name": "long_call",
+        "Qty": "1",
+        "OptionType": "Call",
+        "ExpirationName": "exp2",
+        "StrikeSelector": {
+          "Min": null,
+          "Max": null,
+          "BidPrice": null,
+          "AskPrice": null,
+          "MidPrice": null,
+          "StrikePrice": null,
+          "Delta": "abs(pos_delta)",
+          "Complex": null
+        },
+        "LegGroupId": "1"
+      }
+    ]
+  },
+  "Entry": {
+    "Schedule": {
+      "AfterMarketOpenMinutes": "30",
+      "BeforeMarketCloseMinutes": null,
+      "Every": "day"
+    },
+    "Conditions": [],
+    "VarDefines": {},
+    "AbortConditions": [],
+    "ReentryDays": "0",
+    "Concurrency": {
+      "MaxPositionsInFlight": "12",
+      "EntryShiftDays": "6"
+    },
+    "QtyMultiplier": null
+  },
+  "Adjustment": {
+    "Schedule": {
+      "AfterMarketOpenMinutes": null,
+      "BeforeMarketCloseMinutes": "60",
+      "Every": "day"
+    },
+    "ConditionalAdjustments": {
+      "pos_delta > 5": {
+        "MoveLegAdjustment": {
+          "LegName": "upper_long_put",
+          "StrikeSelector": {
+            "Min": null,
+            "Max": "50",
+            "BidPrice": null,
+            "AskPrice": null,
+            "MidPrice": null,
+            "StrikePrice": null,
+            "Delta": "abs(pos_delta - leg_upper_long_put_delta) / abs(leg_upper_long_put_qty)",
+            "Complex": null
+          },
+          "ExpirationName": null,
+          "Expirations": null,
+          "VarDefines": null
+        },
+        "RemoveLegsAdjustment": null,
+        "AddLegsAdjustment": null,
+        "UpdateVarsAdjustment": null
+      },
+      "pos_delta < -5": {
+        "MoveLegAdjustment": {
+          "LegName": "short_call",
+          "StrikeSelector": {
+            "Min": null,
+            "Max": "50",
+            "BidPrice": null,
+            "AskPrice": null,
+            "MidPrice": null,
+            "StrikePrice": null,
+            "Delta": "abs(pos_delta - leg_short_call_delta) / abs(leg_short_call_qty)",
+            "Complex": null
+          },
+          "ExpirationName": null,
+          "Expirations": null,
+          "VarDefines": null
+        },
+        "RemoveLegsAdjustment": null,
+        "AddLegsAdjustment": null,
+        "UpdateVarsAdjustment": null
+      }
+    },
+    "MaxAdjustmentCount": null
+  },
+  "Exit": {
+    "Schedule": {
+      "AfterMarketOpenMinutes": null,
+      "BeforeMarketCloseMinutes": "30",
+      "Every": "day"
+    },
+    "MaxDaysInTrade": "53",
+    "ProfitTarget": null,
+    "StopLoss": null,
+    "Conditions": [
+      "underlying_price < leg_short_put_strike",
+      "underlying_price > leg_long_call_strike",
+      "abs(pos_delta) > 16"
+    ],
+    "VarDefines": null
+  },
+  "ExternalData": null,
+  "Settings": {
+    "Core": {
+      "LegSelectionConstraint": "UniqueInPosition",
+      "ExpirationSelectionConstraint": "AbortOnReuse",
+      "Margin": null
+    },
+    "Sim": {
+      "FillModel": "AtMidPrice",
+      "SlippageAmt": "0",
+      "Commission": {
+        "CommissionModel": "FixedFee",
+        "OptionFee": "1.7",
+        "DeribitCommissionSettings": null
+      },
+      "PositionMonitor": {
+        "TraceCollectionInterval": "Off"
+      }
+    },
+    "User": null
+  },
+  "MesoSimVersion": null
+}
